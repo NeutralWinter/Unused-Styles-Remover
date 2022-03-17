@@ -1,0 +1,53 @@
+/* ================================ Combinations ================================ */
+
+.c-counter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
+
+  overflow: hidden;
+
+  border: 1px solid #18a0fb;
+  border-radius: 8px;
+  font-size: 15px;
+
+  line-height: 17px;
+
+  &__icon {
+    padding: 6px;
+    background-color: #18a0fb;
+  }
+
+  &__count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+
+    margin-right: -1px;
+
+    border: 1px solid #18a0fb;
+  }
+}
+
+.c-check {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &__label {
+    margin-left: 12px;
+    color: #c6c6c6;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 19px;
+    transition: 0.2s;
+  }
+
+  &.--active &__label {
+    color: #000000;
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Unused Styles Remover",
+  "id": "1052937551486129898",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "editorType": [
+    "figma"
+  ],
+  "ui": "dist/ui.html",
+  "menu" : [
+    {"name": "Run with properties", "command": "run"},
+    {"name": "Open UI", "command": "ui"},
+    {"separator": true},
+    {"name": "Remove Fonts", "command": "font"},
+    {"name": "Remove Colors", "command": "color"},
+    {"name": "Remove Effects", "command": "effect"},
+    {"name": "Remove Grids", "command": "grid"},
+    {"separator": true},
+    {"name": "Remove All", "command": "all"}
+  ]
+}

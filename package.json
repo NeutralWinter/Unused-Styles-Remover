@@ -1,0 +1,43 @@
+{
+  "name": "unused-styles-remover",
+  "version": "1.0.0",
+  "description": "This plugin can remove any unused fonts, colors, effects and grids, from your style set",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode=development --watch",
+    "prod": "webpack --mode=production"
+  },
+  "keywords": [],
+  "author": "Denis Soloviev",
+  "license": "ISC",
+  "devDependencies": {
+    "bundle-loader": "^0.5.6",
+    "css-loader": "^6.6.0",
+    "data-ripple": "^0.1.1",
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
+    "html-webpack-plugin": "^5.5.0",
+    "inline-chunk-html-plugin": "^1.1.1",
+    "path": "^0.12.7",
+    "prettier": "^2.6.0",
+    "pug": "^2.0.4",
+    "pug-loader": "^2.4.0",
+    "sass": "^1.49.7",
+    "sass-loader": "^12.4.0",
+    "script-loader": "^0.7.2",
+    "style-loader": "^3.3.1",
+    "stylelint": "^14.3.0",
+    "stylelint-config-outside-in-order": "^0.1.0",
+    "stylelint-config-recommended-scss": "^5.0.2",
+    "stylelint-config-sass-guidelines": "^9.0.1",
+    "stylelint-config-standard-scss": "^3.0.0",
+    "stylelint-scss": "^4.1.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-preprocessor-loader": "^1.1.4"
+  }
+}

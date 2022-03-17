@@ -1,0 +1,8 @@
+.m-options
+  each optionType in ['fonts', 'colors', 'effects', 'grids']
+    .c-check(id=optionType)
+      label.b-toggle
+        input.b-toggle__checkbox(id=optionType+'_checkbox' type='checkbox' name=optionType)
+        span.b-toggle__slider
+      label.c-check__label(for=optionType+'_checkbox') Remove #{optionType}
+  button.b-removeButton.--lightRipple Run

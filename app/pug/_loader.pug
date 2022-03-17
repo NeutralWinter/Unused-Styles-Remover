@@ -1,0 +1,12 @@
+.m-loadingScreen
+  .b-loader
+    - var i = 0;
+    .b-loader__container
+      while i < 4
+        - ++i
+        - var j = 0;
+        .b-loader__squares
+          while j < 4
+            - j++
+            span.b-loader__square
+  span.m-loadingScreen__text
