@@ -1,8 +1,10 @@
-import { rippleEffect, Ripple } from 'data-ripple';
+import { Ripple } from 'data-ripple';
 
-let ripple = document.querySelector('.--lightRipple');
+let ripples = document.querySelectorAll('.--lightRipple');
 
-new Ripple(ripple, {
-  color: 'rgba(255, 255, 255, 0.30)',
-  enterDuration: 400,
-});
+for (let ripple of ripples) {
+  new Ripple(ripple, {
+    color: 'rgba(255, 255, 255, 0.30)',
+    enterDuration: 400,
+  });
+}
