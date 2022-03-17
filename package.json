@@ -4,8 +4,8 @@
   "description": "This plugin can remove any unused fonts, colors, effects and grids, from your style set",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode=development --watch",
-    "prod": "webpack --mode=production"
+    "dev": "set NODE_ENV=development&&webpack --watch",
+    "prod": "set NODE_ENV=production&&webpack"
   },
   "keywords": [],
   "author": "Denis Soloviev",
