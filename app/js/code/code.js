@@ -19,8 +19,9 @@ let wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 run(figma.command);
 
 function removeStyle(type) {
-  if (styles[`${type}s`].length > 0) {
-    removeUnusedFonts();
+  if (styles[type].length > 0) {
+    findAndRemove(type);
+
     figma.notify(`${count} ${type}s removed`, {
       timeout: 10000000,
     });
@@ -32,48 +33,12 @@ function removeStyle(type) {
 
 async function run(command) {
   switch (command) {
-    case 'font':
-      removeStyle('font');
+    case 'font' || 'color' || 'effect' || 'grid':
+      removeStyle(command);
       break;
-
-    case 'color':
-      if (styles.color.length > 0) {
-        removeUnusedColors();
-        figma.notify(`${count} colors removed`, {
-          timeout: 10000000,
-        });
-        figma.closePlugin();
-      } else {
-        figma.closePlugin(`There are no color styles in this document`);
-      }
-      break;
-
-    case 'effect':
-      if (styles.effect.length > 0) {
-        removeUnusedEffects();
-        figma.notify(`${count} effects removed`, {
-          timeout: 10000000,
-        });
-        figma.closePlugin();
-      } else {
-        figma.closePlugin(`There are no effect styles in this document`);
-      }
-      break;
-
-    case 'grid':
-      if (styles.grid.length > 0) {
-        removeUnusedGrids();
-        figma.notify(`${count} grids removed`, {
-          timeout: 10000000,
-        });
-        figma.closePlugin();
-      } else {
-        figma.closePlugin(`There are no grid styles in this document`);
-      }
-      break;
-
     case 'all':
       let check = Object.values(styles).every((element) => element.length == 0);
+
       if (check) {
         figma.closePlugin(`There are no styles in this document at all`);
       } else {
@@ -120,19 +85,21 @@ async function run(command) {
       figma.showUI(__html__);
       figma.ui.resize(228, 276);
 
-      figma.ui.postMessage(await figma.clientStorage.getAsync('options'));
+      figma.ui.postMessage(await figma.clientStorage.getAsync('test'));
       figma.ui.onmessage = async (msg) => {
-        await figma.clientStorage.setAsync('options', msg.removeSettings);
-        let settings = await figma.clientStorage.getAsync('options');
+        await figma.clientStorage.setAsync('test', msg.removeSettings);
+        let settings = await figma.clientStorage.getAsync('test');
         if (msg.type === 'remove') {
           styles = {
-            fonts: figma.getLocalTextStyles(),
+            font: figma.getLocalTextStyles(),
             color: figma.getLocalPaintStyles(),
-            effects: figma.getLocalstyles.effect(),
-            grids: figma.getLocalstyles.grid(),
+            effect: figma.getLocalEffectStyles(),
+            grids: figma.getLocalGridStyles(),
           };
 
-          console.log(settings);
+          console.log(styles);
+          console.log(figma.getLocalEffectStyles());
+          console.log(styles.effect.length);
 
           if (
             (styles.font.length != 0 && settings.fonts) ||
@@ -151,18 +118,20 @@ async function run(command) {
       };
       break;
     case 'run':
-      let settings = await figma.clientStorage.getAsync('options');
+      let settings = await figma.clientStorage.getAsync('test');
       if (settings != undefined) {
         if (!settings.grids && !settings.effects && !settings.colors && !settings.fonts) {
           figma.closePlugin('Select any type of style in UI');
         } else {
           styles = {
-            fonts: figma.getLocalTextStyles(),
-            colors: figma.getLocalPaintStyles(),
-            effects: figma.getLocalstyles.effect(),
-            grids: figma.getLocalstyles.grid(),
+            font: figma.getLocalTextStyles(),
+            color: figma.getLocalPaintStyles(),
+            effect: figma.getLocalEffectStyles(),
+            grid: figma.getLocalGridStyles(),
           };
-
+          console.log(styles);
+          console.log(figma.getLocalEffectStyles());
+          console.log(styles.effect.length);
           if (styles.font.length == 0 && styles.color.length == 0 && styles.effect.length == 0 && styles.grid.length == 0) {
             figma.closePlugin(`There are no styles in this document at all`);
           } else {
@@ -224,6 +193,7 @@ async function removeProps(settings) {
   }
 
   count = 0;
+  console.log(styles.effect.length);
   if (styles.effect.length > 0 && settings.effects) {
     await figma.ui.postMessage('effects');
     await wait(100);
@@ -309,81 +279,18 @@ async function removePropsNoUi(settings) {
   return removedItems;
 }
 
-function removeUnusedFonts() {
-  let search;
+function findAndRemove(type) {
+  let search,
+    ids = {
+      font: ['textStyleId'],
+      color: ['fillStyleId', 'strokeStyleId'],
+      effect: ['effectStyleId'],
+      grid: ['gridStyleId'],
+    };
 
-  for (let style of styles.font) {
-    let finded;
-    for (let page of figmaRoot.children) {
-      search = page.findOne((n) => n.textStyleId === style.id);
-
-      if (search != null) {
-        finded = true;
-        break;
-      }
-    }
-    if (!finded) {
-      style.remove();
-      count++;
-    }
-  }
-}
-
-function removeUnusedColors() {
-  let search, search2;
-
-  for (let style of styles.color) {
-    let finded;
-    for (let page of figmaRoot.children) {
-      search = page.findOne((n) => n.fillStyleId === style.id);
-      search2 = page.findOne((n) => n.strokeStyleId === style.id);
-
-      if (search != null || search2 != null) {
-        finded = true;
-        break;
-      }
-    }
-    if (!finded) {
-      style.remove();
-      count++;
-    }
-  }
-}
-
-function removeUnusedEffects() {
-  let search;
-
-  for (let style of styles.effect) {
-    let finded;
-    for (let page of figmaRoot.children) {
-      search = page.findOne((n) => n.effectStyleId === style.id);
-
-      if (search != null) {
-        finded = true;
-        break;
-      }
-    }
-    if (!finded) {
-      style.remove();
-      count++;
-    }
-  }
-}
-
-function removeUnusedGrids() {
-  let search;
-
-  for (let style of styles.grid) {
-    let finded;
-    for (let page of figmaRoot.children) {
-      search = page.findOne((n) => n.gridStyleId === style.id);
-
-      if (search != null) {
-        finded = true;
-        break;
-      }
-    }
-    if (!finded) {
+  for (let style of styles[type]) {
+    for (const item of ids[type]) search = figmaRoot.findOne((n) => n[item] === style.id);
+    if (search == null) {
       style.remove();
       count++;
     }
