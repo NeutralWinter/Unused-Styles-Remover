@@ -12,12 +12,8 @@
 
 <h1  align = "center">&nbsp<br>THANKS FOR WATCHING<br>&nbsp </h1>
 
-<h3 align = "center">Follow me on:</h3>
+<h3 align = "center">Follow me on social media</h3>
 
 <p align = "center">
-<a href="https://twitter.com/neutralwinter">📰 Twitter</a>&nbsp&nbsp&nbsp
-<a href="https://www.instagram.com/_denis.solovey/">📷 Instagram</a>&nbsp&nbsp&nbsp
-<a href="https://dribbble.com/Neutral_Winter">🎨 Dribble</a>&nbsp&nbsp&nbsp
-<a href="https://www.producthunt.com/@denis_soloviev">📦 Producthunt</a>&nbsp&nbsp&nbsp
-<a href="https://www.figma.com/@neutralwinter">🔧 Figma Community</a>
+◼<a href="https://twitter.com/neutralwinter">https://teletype.link/neutralwinter</a>◼
 </p>
