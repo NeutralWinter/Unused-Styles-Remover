@@ -12,7 +12,7 @@
 
 <h1  align = "center">&nbsp<br>THANKS FOR WATCHING<br>&nbsp </h1>
 
-<h3 align = "center">Follow me on:</h3> 
+<h3 align = "center">Follow me on:</h3>
 
 <p align = "center">
 <a href="https://twitter.com/neutralwinter">📰 Twitter</a>&nbsp&nbsp&nbsp
