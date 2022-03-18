@@ -25,7 +25,6 @@ onmessage = (msg) => {
   //============================== Set Settings
 
   if ((typeof message === 'object' && message.type == undefined) || message == undefined) {
-    console.log(message);
     let setSettings = message;
     settings =
       setSettings != undefined
@@ -79,7 +78,6 @@ onmessage = (msg) => {
     case 'colors':
     case 'effects':
     case 'grids':
-      console.log(message);
       searchText.textContent = `Searching and removing unused ${message}...`;
       break;
 
