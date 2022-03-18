@@ -12,8 +12,8 @@
 
 <h1  align = "center">&nbsp<br>THANKS FOR WATCHING<br>&nbsp </h1>
 
-<h3 align = "center">Follow me on socials</h3>
+<h3 align = "center">Follow me on socials</h3>💗
 
 <p align = "center">
-◼<a href="https://twitter.com/neutralwinter">https://teletype.link/neutralwinter</a>◼
+<a href="https://twitter.com/neutralwinter">https://teletype.link/neutralwinter</a>
 </p>
