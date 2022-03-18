@@ -75,7 +75,11 @@ onmessage = (msg) => {
       }, 400);
       break;
 
-    case 'fonts' || 'colors' || 'effects' || 'grids':
+    case 'fonts':
+    case 'colors':
+    case 'effects':
+    case 'grids':
+      console.log(message);
       searchText.textContent = `Searching and removing unused ${message}...`;
       break;
 
