@@ -15,5 +15,5 @@
 <h3 align = "center">&nbsp&nbsp&nbspFollow me on social media 💗</h3>
 
 <p align = "center">
-<a href="https://teletype.link/neutralwinter">https://teletype.link/neutralwinter</a>
+<a href="https://teletype.link/neutralwinter" target="_blank">https://teletype.link/neutralwinter</a>
 </p>
