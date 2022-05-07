@@ -32,7 +32,7 @@ function findAndRemove(params) {
 }
 
 function removeStyles(params) {
-  if (params.style.length > 0 && params.settings) {
+  if (params.style.length > 0 && params.settings || params.once) {
     findAndRemove(params);
 
     if (params.once) {
@@ -47,7 +47,7 @@ function removeStyles(params) {
     if (params.once) {
       figma.closePlugin(`There are no ${params.type} styles in this document`);
     } else {
-      if (params.setting) figma.notify(`There are no ${params.type} styles in this document`);
+      if (params.settings) figma.notify(`There are no ${params.type} styles in this document`);
     }
     return '';
   }
