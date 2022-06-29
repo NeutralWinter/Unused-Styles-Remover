@@ -33,6 +33,7 @@ module.exports = {
       filename: 'ui.html',
       inject: 'body',
       chunks: ['ui'],
+      cache: false,
     }),
     new InlineChunkHtmlPlugin(HtmlWebpackPlugin, ['.js$']),
   ],

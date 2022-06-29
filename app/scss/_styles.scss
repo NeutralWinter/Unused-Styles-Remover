@@ -1,0 +1,47 @@
+.figma-light {
+  --color-background: #ffffff;
+  --color-icon: #b3b3b3;
+  --color-text-primary: #000000;
+  --color-text-secondary: #898989;
+  --color-primary: #18a0fb;
+  --color-secondary: #daf0ff;
+  --color-loader-bg: #e6e6e6;
+}
+
+.figma-dark {
+  --color-background: #2c2c2c;
+  --color-text-primary: #ffffff;
+  --color-loader-bg: #444444;
+  --color-secondary: #3a617a;
+  --color-primary: #38a8f3;
+  --color-icon: #949494;
+  --color-text-secondary: #d2d2d2;
+}
+
+@mixin text-style-body {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.03em;
+}
+
+@mixin text-style-label {
+  font-size: 15px;
+}
+@mixin text-style-button {
+  font-size: 13px;
+  font-weight: 600;
+}
+@mixin text-style-count {
+  font-size: 13px;
+  line-height: 134.52%;
+}
+@mixin text-style-title {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 134.52%;
+}
+@mixin text-style-list-item {
+  font-size: 13px;
+  line-height: 134.52%;
+}

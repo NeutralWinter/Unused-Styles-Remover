@@ -1,12 +1,13 @@
-.m-loadingScreen
-  .b-loader
-    - var i = 0;
-    .b-loader__container
-      while i < 4
-        - ++i
-        - var j = 0;
-        .b-loader__squares
-          while j < 4
-            - j++
-            span.b-loader__square
-  span.m-loadingScreen__text
+.m-loader.--modal
+  .c-styleType
+    include ../assets/icons/Scanner.svg
+    .c-styleType__icons
+      include ../assets/icons/Fonts.svg
+      include ../assets/icons/Colors.svg
+      include ../assets/icons/Effects.svg
+      include ../assets/icons/Grids.svg
+  p.m-loader__scanningCount 20 of 43
+  .b-progressBar
+    .b-progressBar__progress
+  p.m-loader__text Scanning a document for unused colors...
+  button.b-button.--outlined.--lightRipple Cancel

@@ -1,68 +1,89 @@
 /* ================================ Modules ================================ */
 
-.m-loadingScreen {
+.--modal {
   position: absolute;
-  z-index: 2;
-  display: none;
+  display: flex;
   flex-direction: column;
-  align-items: center;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background-color: #ffffff;
-  opacity: 0;
+  background-color: var(--color-background);
+}
 
-  transition: all 0.3s ease-in;
+.m-options {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 24px 26px 20px 22px;
 
-  .b-loader {
-    margin-top: 60px;
+  &__checks {
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+  }
+
+  .b-button {
+    margin-top: 34px;
+  }
+}
+
+.m-loader {
+  z-index: 1;
+  align-items: center;
+  padding: 28px 45px 45px 45px;
+
+  text-align: center;
+
+  &__scanningCount {
+    @include text-style-count;
+    margin-top: 14px;
+  }
+
+  .b-progressBar {
+    margin-top: 10px;
   }
 
   &__text {
-    width: 200px;
-    color: rgb(56, 56, 56);
-    font-weight: 400;
-    line-height: 1.3;
-    text-align: center;
+    width: 152px;
+    @include text-style-title;
+    margin-top: 10px;
+    color: var(--color-text-secondary);
+  }
+
+  .b-button {
+    margin-top: 24px;
+  }
+}
+
+.m-nothing {
+  z-index: 2;
+  align-items: center;
+  padding: 28px 45px 45px 45px;
+  justify-content: center;
+
+  text-align: center;
+
+  &__text {
+    @include text-style-title;
+    margin-top: 14px;
+    margin-bottom: 24px;
+
+  }
+
+  & path {
+    fill: var(--color-icon);
   }
 }
 
 .m-report {
-  position: absolute;
-  z-index: 1;
-  display: none;
-  width: 100%;
-  height: 100%;
-  background-color: #ffffff;
-  opacity: 0;
+  z-index: 2;
+  gap: 20px;
+  padding: 12px 20px 49px 20px;
+  overflow-y: auto;
 
-  transition: all 0.3s ease-in;
-
-  &__container {
+  &__list {
     display: flex;
+    gap: 12px;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 174px;
-    padding: 18px 20px 22px;
-  }
-
-  .c-counter {
-    width: 100%;
-    margin-top: 10px;
-
-    &:nth-child(1) {
-      margin-top: 0;
-    }
-  }
-
-  .b-back{
-    margin-top: 20px;
-  }
-}
-
-.m-options{
-  padding: 18px 20px 22px;
-
-  .c-check {
-    margin-bottom: 14px;
   }
 }

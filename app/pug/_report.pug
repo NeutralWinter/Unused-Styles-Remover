@@ -1,26 +1,18 @@
-.m-report
-  .m-report__container
-    ul.m-report__info
-      li#fonts-info.c-counter
-        .c-counter__icon
-          include ../assets/icons/fonts.svg
-        span Fonts
-        span.c-counter__count  0
-      li#colors-info.c-counter
-        .c-counter__icon
-          include ../assets/icons/colors.svg
-        span Colors
-        span.c-counter__count  0
-      li#effects-info.c-counter
-        .c-counter__icon
-          include ../assets/icons/effects.svg
-        span Effects
-        span.c-counter__count  0
-      li#grids-info.c-counter
-        .c-counter__icon
-          include ../assets/icons/grids.svg
-        span Grids
-        span.c-counter__count  0
-    button.b-back.--lightRipple
-      include ../assets/icons/arrow-left.svg 
-      |Back
+.m-report.--modal
+  .c-actions
+    button.b-button.--outlined.--lightRipple Cancel
+    button.b-button.--filled.--lightRipple Confirm
+  .m-report__list
+    .c-removeItem.--title
+      .c-removeItem__container
+        include ../assets/icons/Removed-Fonts.svg
+        |Fonts to remove
+      button.b-iconButton
+        include ../assets/icons/Remove-Collection.svg
+    .c-removeItem.--style
+      span.c-removeItem__text Name of style
+      .c-removeItem__container
+        button.b-iconButton.--remove
+          include ../assets/icons/Remove-Style.svg
+        button.b-iconButton.--redo
+          include ../assets/icons/Redo.svg

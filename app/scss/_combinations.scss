@@ -1,53 +1,122 @@
 /* ================================ Combinations ================================ */
 
-.c-counter {
+.c-styleType {
+  position: relative;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  height: 36px;
+  justify-content: center;
 
-  overflow: hidden;
-
-  border: 1px solid #18a0fb;
-  border-radius: 8px;
-  font-size: 15px;
-
-  line-height: 17px;
-
-  &__icon {
-    padding: 6px;
-    background-color: #18a0fb;
+  .scanner {
+    position: absolute;
+    z-index: 1;
+    animation: scanning 2s ease-in-out infinite;
   }
 
-  &__count {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 44px;
-    height: 44px;
+  &__icons {
+    position: relative;
+    width: 56px;
+    height: 56px;
 
-    margin-right: -1px;
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
 
-    border: 1px solid #18a0fb;
+      path {
+        fill: var(--color-icon);
+      }
+    }
+
+    .--visible {
+      opacity: 1;
+    }
   }
 }
 
-.c-check {
+@keyframes scanning {
+
+  0% {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+
+  25% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(51px);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translateY(51px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+}
+
+.c-removeItem {
+
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
 
-  &__label {
-    margin-left: 12px;
-    color: #c6c6c6;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 19px;
-    transition: 0.2s;
+
+  &.--title {
+    @include text-style-title;
+    padding-bottom: 6px;
+    border-bottom: solid var(--color-icon) 1px;
   }
 
-  &.--active &__label {
-    color: #000000;
+  &.--style{
+    @include text-style-list-item;
+    padding-bottom: 11px;
+    border-bottom: solid var(--color-loader-bg) 1px;
   }
+
+  .infoIcon {
+    margin-right: 10px;
+    fill: var(--color-primary);
+    vertical-align: middle;
+  }
+
+  &__text{
+    width: 290px;
+    margin-top: 5px;
+  }
+
+  .--redo{
+    display: none;
+  }
+  
+  &.--onRemove {
+    opacity: 0.4;
+
+    .--redo{
+      display: block;
+    }
+
+    .--remove{
+      display: none;
+    }
+  }
+}
+
+.c-actions{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  width: 100%;
+  padding: 9px 0px;
+  border-top: solid var(--color-loader-bg) 1px;
+  background-color: var(--color-background);
 }

@@ -4,6 +4,11 @@
 ///// ================================ Code ======================================
 console.clear();
 
+let test = figma.currentPage.findOne((n) => n.name === '{typography}');
+let see = figma.getLocalTextStyles();
+console.log(test);
+console.log(see);
+
 let count = 0;
 
 let wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -32,7 +37,7 @@ function findAndRemove(params) {
 }
 
 function removeStyles(params) {
-  if (params.style.length > 0 && params.settings || params.once) {
+  if ((params.style.length > 0 && params.settings) || params.once) {
     findAndRemove(params);
 
     if (params.once) {
@@ -41,7 +46,7 @@ function removeStyles(params) {
       });
       figma.closePlugin();
     }
-    
+
     return `${count} ${params.type}s`;
   } else {
     if (params.once) {
@@ -117,8 +122,8 @@ async function run(command) {
       });
       break;
     case 'ui': {
-      figma.showUI(__html__);
-      figma.ui.resize(228, 276);
+      figma.showUI(__html__, { themeColors: true });
+      figma.ui.resize(456, 556);
 
       figma.ui.postMessage(await figma.clientStorage.getAsync(settingsName));
       figma.ui.onmessage = async (msg) => {
