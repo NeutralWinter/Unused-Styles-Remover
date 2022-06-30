@@ -10,6 +10,10 @@
   background-color: var(--color-background);
 }
 
+$fadeIn: fadeIn 0.3s linear forwards;
+$fadeOut: fadeOut 0.3s linear forwards;
+$fadeOut0: fadeOut 0s linear forwards;
+
 .m-options {
   box-sizing: border-box;
   width: 100%;
@@ -29,10 +33,11 @@
 
 .m-loader {
   z-index: 1;
+  visibility: hidden;
   align-items: center;
   padding: 28px 45px 45px 45px;
-
   text-align: center;
+  animation: $fadeOut0;
 
   &__scanningCount {
     @include text-style-count;
@@ -53,25 +58,139 @@
   .b-button {
     margin-top: 24px;
   }
+
+  // Состояния
+  $parent: &;
+  $types: fonts, colors, effects, grids;
+
+  @each $type in $types {
+    &.--#{$type} {
+      .c-styleType__#{$type} {
+        opacity: 1;
+      }
+
+      #{$parent}__text::after {
+        content: 'Scanning a document for unused #{$type}';
+      }
+    }
+  }
 }
 
-.m-nothing {
-  z-index: 2;
+.m-result {
+  z-index: 3;
   justify-content: center;
   align-items: center;
   padding: 28px 45px 45px 45px;
-
   text-align: center;
+  animation: $fadeOut0;
 
   &__text {
     @include text-style-title;
     margin-top: 14px;
     margin-bottom: 24px;
 
+    &::after {
+      content: 'Nothing found';
+    }
   }
 
-  & path {
+  &__states {
+    position: relative;
+    width: 100%;
+    height: 56px;
+
+    & > div {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: 0 auto;
+    }
+  }
+
+  .b-button {
+    transition: all 0.3s ease;
+
+    &::after {
+      content: 'Back';
+    }
+  }
+
+  // Иконки состояний
+
+  &__nothing path {
     fill: var(--color-icon);
+  }
+
+  &__check {
+    width: 56px;
+
+    .m-result__wrapper {
+      width: 0px;
+      overflow: hidden;
+      transition: width 0.6s ease;
+    }
+
+    path {
+      fill: var(--color-primary);
+    }
+  }
+
+  &__trash {
+    width: 56px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    path,
+    rect,
+    line {
+      stroke: var(--color-primary);
+    }
+  }
+
+  // Состояния
+  $parent: &;
+
+  &.--removing {
+    #{$parent}__nothing {
+      display: none;
+    }
+
+    #{$parent}__trash {
+      opacity: 1;
+    }
+
+    #{$parent}__text::after {
+      content: 'Removing styles';
+    }
+
+    .b-button {
+      opacity: 0;
+    }
+  }
+
+  &.--done {
+    #{$parent}__nothing {
+      display: none;
+    }
+
+    #{$parent}__check {
+      #{$parent}__wrapper {
+        width: 56px;
+      }
+    }
+
+    #{$parent}__text::after {
+      content: 'Selected styles are removed';
+    }
+
+    .b-button {
+      opacity: 1;
+
+      &::after {
+        content: 'Ok';
+      }
+    }
   }
 }
 
@@ -81,6 +200,7 @@
   height: auto;
   min-height: 100%;
   padding: 12px 20px 96px 20px;
+  animation: $fadeOut0;
 
   &__list {
     display: flex;
@@ -100,5 +220,105 @@
   border-top: 1px solid var(--color-loader-bg);
 
   font-size: 12px;
+}
 
+@keyframes fadeIn {
+
+  from {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  to {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+
+  from {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+.--options {
+
+  .m-options {
+    animation: $fadeIn;
+  }
+
+  .m-loader {
+    animation: $fadeOut;
+  }
+
+  .m-report {
+    animation: $fadeOut;
+  }
+
+  .m-result {
+    animation: $fadeOut;
+  }
+}
+
+.--loader {
+
+  .m-options {
+    animation: $fadeOut;
+  }
+
+  .m-loader {
+    animation: $fadeIn;
+  }
+
+  .m-report {
+    animation: $fadeOut;
+  }
+
+  .m-result {
+    animation: $fadeOut;
+  }
+}
+
+.--report {
+
+  .m-options {
+    animation: $fadeOut;
+  }
+
+  .m-loader {
+    animation: $fadeOut;
+  }
+
+  .m-report {
+    animation: $fadeIn;
+  }
+
+  .m-result {
+    animation: $fadeOut;
+  }
+}
+
+.--result {
+
+  .m-options {
+    animation: $fadeOut;
+  }
+
+  .m-loader {
+    animation: $fadeOut;
+  }
+
+  .m-report {
+    animation: $fadeOut;
+  }
+
+  .m-result {
+    animation: $fadeIn;
+  }
 }

@@ -16,19 +16,16 @@
     width: 56px;
     height: 56px;
 
-    svg {
+    div {
       position: absolute;
       top: 0;
       left: 0;
       opacity: 0;
+      transition: opacity 0.2s ease;
 
       path {
         fill: var(--color-icon);
       }
-    }
-
-    .--visible {
-      opacity: 1;
     }
   }
 }
@@ -62,11 +59,9 @@
 }
 
 .c-removeItem {
-
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-
 
   &.--title {
     @include text-style-title;
@@ -74,7 +69,7 @@
     border-bottom: solid var(--color-icon) 1px;
   }
 
-  &.--style{
+  &.--style {
     @include text-style-list-item;
     padding-bottom: 11px;
     border-bottom: solid var(--color-loader-bg) 1px;
@@ -86,29 +81,29 @@
     vertical-align: middle;
   }
 
-  &__text{
+  &__text {
     width: 290px;
     margin-top: 5px;
   }
 
-  .--redo{
+  .--redo {
     display: none;
   }
-  
+
   &.--onRemove {
     opacity: 0.4;
 
-    .--redo{
+    .--redo {
       display: block;
     }
 
-    .--remove{
+    .--remove {
       display: none;
     }
   }
 }
 
-.c-actions{
+.c-actions {
   position: fixed;
   bottom: 47px;
   left: 0;

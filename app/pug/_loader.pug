@@ -2,12 +2,16 @@
   .c-styleType
     include ../assets/icons/Scanner.svg
     .c-styleType__icons
-      include ../assets/icons/Fonts.svg
-      include ../assets/icons/Colors.svg
-      include ../assets/icons/Effects.svg
-      include ../assets/icons/Grids.svg
+      .c-styleType__fonts
+        include ../assets/icons/Fonts.svg
+      .c-styleType__colors
+        include ../assets/icons/Colors.svg
+      .c-styleType__effects
+        include ../assets/icons/Effects.svg
+      .c-styleType__grids
+        include ../assets/icons/Grids.svg
   p.m-loader__scanningCount 20 of 43
   .b-progressBar
     .b-progressBar__progress
-  p.m-loader__text Scanning a document for unused colors...
+  p.m-loader__text 
   button.b-button.--outlined.--lightRipple Cancel
