@@ -110,13 +110,13 @@
 
 .c-actions{
   position: fixed;
-  bottom: 0;
+  bottom: 47px;
   left: 0;
   display: flex;
   gap: 18px;
   justify-content: center;
   width: 100%;
   padding: 9px 0px;
-  border-top: solid var(--color-loader-bg) 1px;
   background-color: var(--color-background);
+  border-top: solid var(--color-loader-bg) 1px;
 }

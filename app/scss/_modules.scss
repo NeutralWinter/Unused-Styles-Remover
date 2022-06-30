@@ -57,9 +57,9 @@
 
 .m-nothing {
   z-index: 2;
+  justify-content: center;
   align-items: center;
   padding: 28px 45px 45px 45px;
-  justify-content: center;
 
   text-align: center;
 
@@ -78,12 +78,27 @@
 .m-report {
   z-index: 2;
   gap: 20px;
-  padding: 12px 20px 49px 20px;
-  overflow-y: auto;
+  height: auto;
+  min-height: 100%;
+  padding: 12px 20px 96px 20px;
 
   &__list {
     display: flex;
     gap: 12px;
     flex-direction: column;
   }
+}
+
+.m-support {
+  position: fixed;
+  bottom: 0;
+  z-index: 3;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 20px 18px 20px;
+  background-color: var(--color-background);
+  border-top: 1px solid var(--color-loader-bg);
+
+  font-size: 12px;
+
 }

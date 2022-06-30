@@ -1,5 +1,10 @@
 /* ================================ Base ================================ */
 
+.b-link {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
 .b-toggle {
   display: flex;
   gap: 12px;
