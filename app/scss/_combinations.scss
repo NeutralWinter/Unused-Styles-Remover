@@ -8,7 +8,19 @@
   .scanner {
     position: absolute;
     z-index: 1;
+    opacity: 0;
     animation: scanning 2s ease-in-out infinite;
+  }
+
+  &__preparing {
+    animation: pulse 1s ease infinite;
+
+    path {
+
+      /* stylelint-disable-next-line declaration-no-important */
+      fill: none !important;
+      stroke: var(--color-primary);
+    }
   }
 
   &__icons {
@@ -30,38 +42,33 @@
   }
 }
 
-@keyframes scanning {
-
-  0% {
-    opacity: 0;
-    transform: translateY(0px);
-  }
-
-  25% {
-    opacity: 1;
-    transform: translateY(0px);
-  }
-
-  50% {
-    opacity: 1;
-    transform: translateY(51px);
-  }
-
-  75% {
-    opacity: 1;
-    transform: translateY(51px);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(0px);
-  }
+.c-removeList {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
 }
 
 .c-removeItem {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  transition: opacity 0.2s ease;
+
+  .infoIcon {
+    width: 22px;
+    margin-right: 10px;
+    fill: var(--color-primary);
+    vertical-align: middle;
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+
+    div {
+      display: none;
+    }
+  }
 
   &.--title {
     @include text-style-title;
@@ -75,10 +82,55 @@
     border-bottom: solid var(--color-loader-bg) 1px;
   }
 
-  .infoIcon {
-    margin-right: 10px;
-    fill: var(--color-primary);
-    vertical-align: middle;
+  // Состояния
+  $parent: &;
+
+  &.--fonts {
+    #{$parent}__container {
+      #{$parent}__fonts {
+        display: block;
+      }
+
+      &::after {
+        content: 'Fonts to remove';
+      }
+    }
+  }
+
+  &.--colors {
+    #{$parent}__container {
+      #{$parent}__colors {
+        display: block;
+      }
+
+      &::after {
+        content: 'Colors to remove';
+      }
+    }
+  }
+
+  &.--effects {
+    #{$parent}__container {
+      #{$parent}__effects {
+        display: block;
+      }
+
+      &::after {
+        content: 'Effects to remove';
+      }
+    }
+  }
+
+  &.--grids {
+    #{$parent}__container {
+      #{$parent}__grids {
+        display: block;
+      }
+
+      &::after {
+        content: 'Grids to remove';
+      }
+    }
   }
 
   &__text {
@@ -86,19 +138,18 @@
     margin-top: 5px;
   }
 
-  .--redo {
-    display: none;
-  }
-
   &.--onRemove {
     opacity: 0.4;
 
-    .--redo {
-      display: block;
-    }
+    .b-iconButton {
 
-    .--remove {
-      display: none;
+      &__redo {
+        display: block;
+      }
+
+      &__remove {
+        display: none;
+      }
     }
   }
 }
@@ -107,6 +158,7 @@
   position: fixed;
   bottom: 47px;
   left: 0;
+  z-index: 1;
   display: flex;
   gap: 18px;
   justify-content: center;
@@ -114,4 +166,65 @@
   padding: 9px 0px;
   background-color: var(--color-background);
   border-top: solid var(--color-loader-bg) 1px;
+}
+
+.c-error {
+  position: fixed;
+  bottom: 58px;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: var(--color-background);
+  border-top: solid var(--color-loader-bg) 1px;
+  font-size: 12px;
+  transition: bottom 0.3s ease;
+
+  svg {
+    width: 20px;
+    height: auto;
+
+    path {
+      fill: var(--color-error);
+    }
+  }
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: block;
+    content: '';
+    width: 0%;
+    height: 2px;
+    background-color: var(--color-error);
+    opacity: 0.3;
+  }
+
+  &.--alert {
+    bottom: 100px;
+
+    &::after {
+      animation: timer 3s linear 0.3s, timer;
+    }
+  }
+}
+
+@keyframes timer {
+
+  0% {
+    width: 0%;
+  }
+
+  95% {
+    width: 100%;
+  }
+
+  100% {
+    width: 100%;
+  }
 }

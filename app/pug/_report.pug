@@ -1,18 +1,32 @@
 .m-report.--modal
+  .c-error
+    include ../assets/icons/Remove-Style.svg
+    |You must select at least one style
   .c-actions
-    button.b-button.--outlined.--lightRipple Cancel
-    button.b-button.--filled.--lightRipple Confirm
-  .m-report__list
-    .c-removeItem.--title
-      .c-removeItem__container
-        include ../assets/icons/Removed-Fonts.svg
-        |Fonts to remove
-      button.b-iconButton
-        include ../assets/icons/Remove-Collection.svg
-    .c-removeItem.--style
-      span.c-removeItem__text Name of style
-      .c-removeItem__container
-        button.b-iconButton.--remove
-          include ../assets/icons/Remove-Style.svg
-        button.b-iconButton.--redo
-          include ../assets/icons/Redo.svg
+    button.b-button.js-cancel.--outlined.--lightRipple Cancel
+    button.b-button.js-confirm.--filled.--lightRipple Confirm
+  template#template__list
+    .c-removeList
+      .c-removeItem.js-title.--title
+        .c-removeItem__container
+          .c-removeItem__fonts
+            include ../assets/icons/Removed-Fonts.svg
+          .c-removeItem__colors
+            include ../assets/icons/Removed-Colors.svg
+          .c-removeItem__effects
+            include ../assets/icons/Removed-Effects.svg
+          .c-removeItem__grids
+            include ../assets/icons/Removed-Grids.svg
+        button.b-iconButton
+          .b-iconButton__remove
+            include ../assets/icons/Remove-Collection.svg
+          .b-iconButton__redo
+            include ../assets/icons/Redo.svg
+      template#template__item
+        .c-removeItem.js-item.--style
+          span.c-removeItem__text Name of style
+          button.b-iconButton
+            .b-iconButton__remove
+              include ../assets/icons/Remove-Style.svg
+            .b-iconButton__redo
+              include ../assets/icons/Redo.svg

@@ -1,7 +1,9 @@
-.m-loader.--modal
+.m-loader.--modal.--preparing
   .c-styleType
     include ../assets/icons/Scanner.svg
     .c-styleType__icons
+      .c-styleType__preparing
+        include ../assets/icons/doc.svg
       .c-styleType__fonts
         include ../assets/icons/Fonts.svg
       .c-styleType__colors
@@ -10,8 +12,10 @@
         include ../assets/icons/Effects.svg
       .c-styleType__grids
         include ../assets/icons/Grids.svg
-  p.m-loader__scanningCount 20 of 43
+  p.m-loader__scanningCount 1 of 2
   .b-progressBar
     .b-progressBar__progress
   p.m-loader__text 
-  button.b-button.--outlined.--lightRipple Cancel
+  .m-loader__container
+    p.m-loader__description Scanning time depends of the size of your document
+    button.b-button.js-cancel.--outlined.--lightRipple Cancel

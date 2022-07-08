@@ -1,169 +1,111 @@
-/* eslint-disable no-undef */
 //// ================================ Imports ======================================
+import Settings from './settings';
+import Styles from './styles';
+import Parser from './parser';
 
 ///// ================================ Code ======================================
 console.clear();
 
-let test = figma.currentPage.findOne((n) => n.name === '{typography}');
-let see = figma.getLocalTextStyles();
-console.log(test);
-console.log(see);
+const xl = [456, 556],
+  xs = [278, 350];
 
-let count = 0;
+const percent = (a, b) => Math.round((a / b) * 100);
 
-let wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+let cancel = false;
+let finded = {};
 
-function findAndRemove(params) {
-  let search,
-    ids = {
-      font: ['textStyleId'],
-      color: ['fillStyleId', 'strokeStyleId'],
-      effect: ['effectStyleId'],
-      grid: ['gridStyleId'],
-    };
+start(figma.command);
 
-  for (let obj of params.style) {
-    let isNull = true;
-    for (let key of ids[params.type]) {
-      search = figma.root.findOne((n) => n[key] === obj.id);
-      if (search != null) isNull = false;
-    }
-
-    if (isNull) {
-      obj.remove();
-      count++;
-    }
-  }
-}
-
-function removeStyles(params) {
-  if ((params.style.length > 0 && params.settings) || params.once) {
-    findAndRemove(params);
-
-    if (params.once) {
-      figma.notify(`${count} ${params.type}s removed`, {
-        timeout: 10000000,
-      });
-      figma.closePlugin();
-    }
-
-    return `${count} ${params.type}s`;
-  } else {
-    if (params.once) {
-      figma.closePlugin(`There are no ${params.type} styles in this document`);
-    } else {
-      if (params.settings) figma.notify(`There are no ${params.type} styles in this document`);
-    }
-    return '';
-  }
-}
-
-function removeMultipleStyles(styles, settings) {
-  let check = Object.values(styles).some((element) => element.length != 0),
-    removedItems = '';
-
-  if (check) {
-    for (let key in styles) {
-      let remove = removeStyles({ style: styles[key], type: key, settings: settings[`${key}s`] });
-      removedItems += removedItems === '' || remove === '' ? remove : ` | ${remove}`;
-      count = 0;
-    }
-
-    figma.notify(`${removedItems} removed`, {
-      timeout: 10000000,
-    });
-  } else {
-    figma.closePlugin(`There are no styles in this document at all`);
-  }
-
-  figma.closePlugin();
-}
-
-async function removeProps(params) {
-  let message = {
-    type: `${params.type}s`,
-    size: 'NaN',
-  };
-  if (params.style.length > 0 && params.option) {
-    await figma.ui.postMessage(`${params.type}s`);
-    await wait(100);
-    findAndRemove(params);
-
-    message.size = count;
-  } else if (params.style.length == 0 && params.option) {
-    figma.notify(`There are no ${params.type}s styles in this document`);
-  }
-  await figma.ui.postMessage(message);
-}
-
-async function run(command) {
-  let styles = {
-    font: figma.getLocalTextStyles(),
-    color: figma.getLocalPaintStyles(),
-    effect: figma.getLocalEffectStyles(),
-    grid: figma.getLocalGridStyles(),
-  };
-
-  let settingsName = 'remover-settings';
+async function start(command) {
+  const settings = new Settings('a');
 
   switch (command) {
-    case 'font':
-    case 'color':
-    case 'effect':
-    case 'grid':
-      removeStyles({ style: styles[command], type: command, once: true });
-      break;
-    case 'all':
-      removeMultipleStyles(styles, {
-        fonts: true,
-        colors: true,
-        effects: true,
-        grids: true,
-      });
-      break;
-    case 'ui': {
+    case 'ui':
       figma.showUI(__html__, { themeColors: true });
-      figma.ui.resize(456, 556);
-
-      figma.ui.postMessage(await figma.clientStorage.getAsync(settingsName));
-      figma.ui.onmessage = async (msg) => {
-        await figma.clientStorage.setAsync(settingsName, msg.removeSettings);
-        let settings = await figma.clientStorage.getAsync(settingsName),
-          isNotEmpty;
-
-        for (let key in styles) {
-          if (styles[key].length != 0 && settings[`${key}s`]) isNotEmpty = true;
-        }
-
-        if (msg.type === 'remove') {
-          if (isNotEmpty) {
-            await figma.ui.postMessage('fadeIn');
-            await wait(400);
-            for (const key in styles) {
-              await removeProps({ style: styles[key], type: key, option: settings[`${key}s`] });
-              count = 0;
-            }
-            await figma.ui.postMessage('done');
-            await figma.ui.postMessage('fadeOut');
-          } else {
-            figma.notify(`There are no selected style types in this document`);
-          }
-        }
-      };
+      figma.ui.resize(...xs);
+      figma.ui.postMessage({ settings: await settings.get() });
+      figma.ui.onmessage = async (msg) => run(msg, settings);
       break;
-    }
-    case 'run': {
-      let settings = await figma.clientStorage.getAsync(settingsName);
-
-      if (settings != undefined) {
-        let check = Object.values(settings).some((element) => element);
-        check ? removeMultipleStyles(styles, settings) : figma.closePlugin('Select any type of style in UI');
-      } else {
-        figma.closePlugin(`Set the settings first`);
-      }
-      break;
-    }
   }
 }
 
-run(figma.command);
+async function run(msg, settings) {
+  const params = await settings.get();
+  const styles = new Styles(params);
+
+  if (msg.settings) await settings.set(msg.settings);
+  if (msg.preparing) {
+    setTimeout(() => {
+      let scans = new Parser(figma.root, styles);
+      setTimeout(() => scanner(scans, styles), 350);
+    }, 350);
+
+    cancel = false;
+    finded = {};
+  }
+  if (msg.resize) {
+    if (msg.resize == 'xl') figma.ui.resize(...xl);
+    else figma.ui.resize(...xs);
+  }
+
+  if (msg.cancel) cancel = true;
+}
+
+function scanner(nodes, styles) {
+  const keys = Object.keys(styles);
+
+  let i = 0;
+  (function loop(j) {
+    setTimeout(function () {
+      const key = keys[i],
+        styleArr = styles[key],
+        style = styleArr[j];
+
+      if (j == 0) {
+        figma.ui.postMessage({
+          loader: true,
+          state: key,
+        });
+      }
+
+      if (cancel) return;
+
+      figma.ui.postMessage({
+        progress: {
+          percent: percent(j + 1, styles[key].length) + '%',
+          queue: j + 1,
+          length: styles[key].length,
+        },
+      });
+
+      scaningNodes(nodes, key, style);
+
+      if (i == keys.length - 1 && j == styleArr.length - 1) {
+        if (Object.keys(finded).length != 0) figma.ui.postMessage({ report: finded });
+        else figma.ui.postMessage({ nothing: true });
+
+        return;
+      }
+      if (i < keys.length - 1 && j == styleArr.length - 1) {
+        i++;
+        loop(0);
+      }
+      if (j < styleArr.length - 1) loop(j + 1);
+    }, 100);
+  })(0);
+}
+
+function scaningNodes(nodes, key, style) {
+  for (let i = 0; i < nodes[key].length; i++) {
+    const node = nodes[key][i];
+
+    if (node === style.id) return;
+    else if (i == nodes[key].length - 1) {
+      if (!finded[key]) finded[key] = [];
+      finded[key].push({
+        id: style.id,
+        name: style.name,
+      });
+    }
+  }
+}

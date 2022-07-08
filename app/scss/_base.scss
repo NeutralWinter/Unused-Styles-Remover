@@ -89,6 +89,7 @@
   &:disabled {
     opacity: 0.3;
     cursor: auto;
+    pointer-events: none;
   }
 }
 
@@ -101,20 +102,24 @@
   border-radius: 4px;
 
   &__progress {
-    width: 50%;
+    width: 0%;
     height: 100%;
     background-color: var(--color-primary);
     border-radius: 4px;
+    transition: width 0.3s ease;
   }
 }
-
 
 .b-iconButton {
   padding: 4px;
   background-color: transparent;
   border-radius: 4px;
   transition: background-color 0.2s;
-  
+
+  &__redo {
+    display: none;
+  }
+
   path {
     fill: var(--color-text-primary);
   }

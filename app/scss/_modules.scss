@@ -34,8 +34,9 @@ $fadeOut0: fadeOut 0s linear forwards;
 .m-loader {
   z-index: 1;
   visibility: hidden;
+  justify-content: center;
   align-items: center;
-  padding: 28px 45px 45px 45px;
+  padding: 28px 45px 74px 45px;
   text-align: center;
   animation: $fadeOut0;
 
@@ -48,6 +49,16 @@ $fadeOut0: fadeOut 0s linear forwards;
     margin-top: 10px;
   }
 
+  &__container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 202px;
+    height: 35px;
+    margin-top: 24px;
+    transition: margin-top 0.1s linear;
+  }
+
   &__text {
     width: 152px;
     @include text-style-title;
@@ -55,13 +66,22 @@ $fadeOut0: fadeOut 0s linear forwards;
     color: var(--color-text-secondary);
   }
 
+  &__description {
+    position: absolute;
+    width: 100%;
+    @include text-style-list-item;
+    color: var(--color-icon);
+    animation: $fadeOut;
+  }
+
   .b-button {
-    margin-top: 24px;
+    position: absolute;
+    animation: $fadeIn;
   }
 
   // Состояния
   $parent: &;
-  $types: fonts, colors, effects, grids;
+  $types: preparing, fonts, colors, effects, grids;
 
   @each $type in $types {
     &.--#{$type} {
@@ -69,8 +89,49 @@ $fadeOut0: fadeOut 0s linear forwards;
         opacity: 1;
       }
 
+      @if $type == preparing {
+
+        .scanner {
+          animation: none;
+        }
+
+        #{$parent}__scanningCount {
+          display: none;
+        }
+
+        .b-progressBar {
+          display: none;
+        }
+
+        #{$parent}__container {
+          margin-top: 8px;
+        }
+
+        #{$parent}__text {
+          margin-top: 14px;
+        }
+
+        #{$parent}__description {
+          animation: none;
+        }
+
+        .b-button {
+          margin-top: 0;
+          animation: $fadeOut0;
+        }
+      } @else {
+
+        .c-styleType__preparing {
+          animation: none;
+        }
+      }
+
       #{$parent}__text::after {
-        content: 'Scanning a document for unused #{$type}';
+        @if $type != preparing {
+          content: 'Scanning a document for unused #{$type}';
+        } @else {
+          content: 'Preparing for scaning';
+        }
       }
     }
   }
@@ -201,12 +262,6 @@ $fadeOut0: fadeOut 0s linear forwards;
   min-height: 100%;
   padding: 12px 20px 96px 20px;
   animation: $fadeOut0;
-
-  &__list {
-    display: flex;
-    gap: 12px;
-    flex-direction: column;
-  }
 }
 
 .m-support {
@@ -215,36 +270,11 @@ $fadeOut0: fadeOut 0s linear forwards;
   z-index: 3;
   box-sizing: border-box;
   width: 100%;
-  padding: 12px 20px 18px 20px;
+  padding: 12px 20px 18px 15px;
   background-color: var(--color-background);
   border-top: 1px solid var(--color-loader-bg);
 
   font-size: 12px;
-}
-
-@keyframes fadeIn {
-
-  from {
-    visibility: hidden;
-    opacity: 0;
-  }
-
-  to {
-    visibility: visible;
-    opacity: 1;
-  }
-}
-@keyframes fadeOut {
-
-  from {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  to {
-    visibility: hidden;
-    opacity: 0;
-  }
 }
 
 .--options {
