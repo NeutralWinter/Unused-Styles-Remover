@@ -1,7 +1,6 @@
 //// ================================ Imports ======================================
 import Settings from './settings';
 import Styles from './styles';
-import Parser from './parser';
 
 ///// ================================ Code ======================================
 console.clear();
@@ -9,16 +8,10 @@ console.clear();
 const xl = [456, 556],
   xs = [278, 350];
 
-const percent = (a, b) => Math.round((a / b) * 100);
+let styles;
 
-let cancel = false;
-let finded = {};
-
-start(figma.command);
-
-async function start(command) {
-  const settings = new Settings('a');
-
+(async function start(command) {
+  const settings = new Settings('gfjh3352352sds532523lisd');
   switch (command) {
     case 'ui':
       figma.showUI(__html__, { themeColors: true });
@@ -27,85 +20,35 @@ async function start(command) {
       figma.ui.onmessage = async (msg) => run(msg, settings);
       break;
   }
-}
+})(figma.command);
 
 async function run(msg, settings) {
-  const params = await settings.get();
-  const styles = new Styles(params);
-
   if (msg.settings) await settings.set(msg.settings);
   if (msg.preparing) {
-    setTimeout(() => {
-      let scans = new Parser(figma.root, styles);
-      setTimeout(() => scanner(scans, styles), 350);
-    }, 350);
-
-    cancel = false;
-    finded = {};
+    styles = new Styles(await settings.get());
+    preparing();
   }
-  if (msg.resize) {
-    if (msg.resize == 'xl') figma.ui.resize(...xl);
-    else figma.ui.resize(...xs);
-  }
+  if (msg.remove) remove(msg.remove);
 
-  if (msg.cancel) cancel = true;
+  if (msg.resize) resize(msg.resize);
+  if (msg.cancel) styles.cancel();
 }
 
-function scanner(nodes, styles) {
-  const keys = Object.keys(styles);
-
-  let i = 0;
-  (function loop(j) {
-    setTimeout(function () {
-      const key = keys[i],
-        styleArr = styles[key],
-        style = styleArr[j];
-
-      if (j == 0) {
-        figma.ui.postMessage({
-          loader: true,
-          state: key,
-        });
-      }
-
-      if (cancel) return;
-
-      figma.ui.postMessage({
-        progress: {
-          percent: percent(j + 1, styles[key].length) + '%',
-          queue: j + 1,
-          length: styles[key].length,
-        },
-      });
-
-      scaningNodes(nodes, key, style);
-
-      if (i == keys.length - 1 && j == styleArr.length - 1) {
-        if (Object.keys(finded).length != 0) figma.ui.postMessage({ report: finded });
-        else figma.ui.postMessage({ nothing: true });
-
-        return;
-      }
-      if (i < keys.length - 1 && j == styleArr.length - 1) {
-        i++;
-        loop(0);
-      }
-      if (j < styleArr.length - 1) loop(j + 1);
-    }, 100);
-  })(0);
+async function preparing() {
+  setTimeout(() => {
+    const collection = styles.filterNodes(figma.root);
+    setTimeout(() => styles.scanNodes(collection), 350);
+  }, 350);
 }
 
-function scaningNodes(nodes, key, style) {
-  for (let i = 0; i < nodes[key].length; i++) {
-    const node = nodes[key][i];
+function remove(msg) {
+  setTimeout(() => {
+    styles.remove(msg);
+    figma.ui.postMessage({ done: true });
+  }, 350);
+}
 
-    if (node === style.id) return;
-    else if (i == nodes[key].length - 1) {
-      if (!finded[key]) finded[key] = [];
-      finded[key].push({
-        id: style.id,
-        name: style.name,
-      });
-    }
-  }
+function resize(msg) {
+  if (msg == 'xl') figma.ui.resize(...xl);
+  else figma.ui.resize(...xs);
 }

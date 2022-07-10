@@ -4,6 +4,7 @@
   --color-text-primary: #000000;
   --color-text-secondary: #898989;
   --color-primary: #18a0fb;
+  --color-primary-dark: #0076c5;
   --color-secondary: #daf0ff;
   --color-loader-bg: #e6e6e6;
   --color-error: #fb1818;
@@ -17,6 +18,8 @@
   --color-loader-bg: #444444;
   --color-secondary: #3a617a;
   --color-primary: #38a8f3;
+  --color-primary-dark: #38a8f3;
+  // --color-primary-dark: #0076c5;
   --color-icon: #949494;
   --color-text-secondary: #d2d2d2;
   --color-error: #ec0000;
@@ -48,4 +51,9 @@
 @mixin text-style-list-item {
   font-size: 13px;
   line-height: 134.52%;
+}
+
+@mixin text-style-support {
+  font-size: 12px;
+  font-weight: 500;
 }

@@ -1,7 +1,7 @@
 /* ================================ Base ================================ */
 
 .b-link {
-  color: var(--color-primary);
+  color: var(--color-primary-dark);
   text-decoration: none;
 }
 
@@ -106,7 +106,10 @@
     height: 100%;
     background-color: var(--color-primary);
     border-radius: 4px;
-    transition: width 0.3s ease;
+    
+    &.--animation {
+      transition: width 0.1s linear;
+    }
   }
 }
 

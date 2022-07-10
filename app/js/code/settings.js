@@ -1,26 +1,29 @@
 export default class Settings {
+  #test;
   constructor(name) {
     this.fonts = true;
     this.colors = true;
     this.effects = true;
     this.grids = true;
-    this.name = name;
+    this.#test = name;
+  }
+
+  get test() {
+    return this.#test;
   }
 
   async get() {
-    let settings = await figma.clientStorage.getAsync(this.name);
-    if (!settings) {
-      settings = Object.entries(this);
-      // eslint-disable-next-line no-unused-vars
-      settings = settings.filter(([key, value]) => value != this.name);
-      settings = Object.fromEntries(settings);
+    let settings = await figma.clientStorage.getAsync(this.#test);
 
-      await this.set(settings);
+    if (!settings) {
+      await this.set(this);
+      return this;
     }
+
     return settings;
   }
 
   async set(obj) {
-    figma.clientStorage.setAsync(this.name, obj);
+    figma.clientStorage.setAsync(this.#test, obj);
   }
 }

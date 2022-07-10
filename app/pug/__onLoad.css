@@ -1,0 +1,39 @@
+.m-onLoad {
+  z-index: 4;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.m-onLoad__loader {
+  animation: pulse 1s ease infinite;
+}
+
+.--onLoad {
+  overflow: hidden;
+}
+
+.--modal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--figma-color-bg);
+}
+
+@keyframes pulse {
+
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
+}

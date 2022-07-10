@@ -1,7 +1,6 @@
 /* ================================ Resets ================================ */
 
 body {
-  margin: 0;
   @include text-style-body;
   color: var(--color-text-primary);
   background-color: var(--color-background);
