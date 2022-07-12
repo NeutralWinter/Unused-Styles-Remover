@@ -1,3 +1,5 @@
+import Fonts from './fonts';
+
 export default class Styles {
   constructor(settings) {
     const keys = Object.keys(settings);
@@ -7,6 +9,8 @@ export default class Styles {
       effects: figma.getLocalEffectStyles(),
       grids: figma.getLocalGridStyles(),
     };
+
+    console.log(styles);
 
     for (const key of keys) {
       if (settings[key]) this[key] = styles[key];
@@ -109,12 +113,44 @@ export default class Styles {
 
     message.id = style.id;
     message.name = style.name;
+
     switch (key) {
       case 'fonts':
+        // eslint-disable-next-line no-case-declarations
+        const fonts = new Fonts();
+
         message.fontFamily = style.fontName.family;
-        message.fontStyle = style.fontName.style;
-        message.textDecoration = style.textDecoration;
-        message.textCase = style.textCase;
+        message.fontWeight = fonts.getWeight(style.fontName.style);
+        message.fontStyle = fonts.getStyle(style.fontName.style);
+        message.textDecoration = fonts.getDecoration(style.textDecoration);
+        message.textTransform = fonts.getCase(style.textCase);
+        break;
+
+      case 'colors':
+        break;
+
+      case 'effects': {
+        const x = style.effects[0].offset ? style.effects[0].offset.x : false;
+        const y = style.effects[0].offset ? style.effects[0].offset.y : false;
+        message.type = x === 0 && y === 0 ? 'SHADOW' : style.effects[0].type;
+        message.angle = 0;
+
+        if (x > 0 && y > 0) message.angle = -45;
+        if (x < 0 && y > 0) message.angle = 45;
+        if (x === 0 && y > 0) message.angle = 0;
+
+        if (x > 0 && y === 0) message.angle = -90;
+        if (x < 0 && y === 0) message.angle = 90;
+
+        if (x > 0 && y < 0) message.angle = -135;
+        if (x < 0 && y < 0) message.angle = 135;
+        if (x === 0 && y < 0) message.angle = 180;
+
+        break;
+      }
+
+      case 'grids':
+        message.type = style.layoutGrids[0].pattern;
         break;
     }
 

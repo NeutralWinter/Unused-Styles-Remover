@@ -9,14 +9,6 @@
     .c-removeList
       .c-removeItem.js-title.--title
         .c-removeItem__container
-          .c-removeItem__fonts
-            include ../assets/icons/Removed-Fonts.svg
-          .c-removeItem__colors
-            include ../assets/icons/Removed-Colors.svg
-          .c-removeItem__effects
-            include ../assets/icons/Removed-Effects.svg
-          .c-removeItem__grids
-            include ../assets/icons/Removed-Grids.svg
         button.b-iconButton
           .b-iconButton__remove
             include ../assets/icons/Remove-Collection.svg
@@ -24,7 +16,29 @@
             include ../assets/icons/Redo.svg
       template#template__item
         .c-removeItem.js-item.--style
-          span.c-removeItem__text Name of style
+          .c-removeItem__container
+            .c-removeItem__fonts
+              |Ag
+            .c-removeItem__colors
+            .c-removeItem__effects
+              .c-removeItem__SHADOW
+                include ../assets/icons/Shadow.svg
+              .c-removeItem__DROP_SHADOW
+                include ../assets/icons/Drop-Shadow.svg
+              .c-removeItem__INNER_SHADOW
+                include ../assets/icons/Inner-Shadow.svg
+              .c-removeItem__LAYER_BLUR
+                include ../assets/icons/Layer-blur.svg
+              .c-removeItem__BACKGROUND_BLUR
+                include ../assets/icons/Bg-blur.svg
+            .c-removeItem__grids
+              .c-removeItem__ROWS
+                include ../assets/icons/Rows.svg
+              .c-removeItem__COLUMNS
+                include ../assets/icons/Cols.svg
+              .c-removeItem__GRID
+                include ../assets/icons/layoutGrids.svg
+            span.c-removeItem__text Name of style
           button.b-iconButton
             .b-iconButton__remove
               include ../assets/icons/Remove-Style.svg

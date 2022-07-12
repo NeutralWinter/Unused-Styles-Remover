@@ -68,8 +68,9 @@ function output(obj) {
       clone = item.content.cloneNode(true).querySelector('.c-removeItem');
       let text = clone.querySelector('.c-removeItem__text');
 
+      setStyleProps(key, clone, props);
 
-
+      clone.classList.add(`--${key}`);
       text.textContent = props.name;
       clone.styleId = props.id;
       clone.styleType = key;
@@ -78,6 +79,27 @@ function output(obj) {
   }
 }
 
+function setStyleProps(key, node, props) {
+  const preview = node.querySelector(`.c-removeItem__${key}`);
+  switch (key) {
+    case 'fonts':
+      preview.style.fontFamily = props.fontFamily;
+      preview.style.fontWeight = props.fontWeight;
+      preview.style.fontStyle = props.fontStyle;
+      preview.style.textDecoration = props.textDecoration;
+      preview.style.textTransform = props.textTransform;
+      break;
+    case 'effects': {
+      const svg = preview.querySelector(`.c-removeItem__${props.type}`).children[0];
+      preview.classList.add(`--${props.type}`);
+      svg.style.transform = `rotate(${props.angle}deg)`;
+      break;
+    }
+    case 'grids':
+      preview.classList.add(`--${props.type}`);
+      break;
+  }
+}
 
 function setItemsEvents() {
   let titles = report.querySelectorAll('.js-title'),

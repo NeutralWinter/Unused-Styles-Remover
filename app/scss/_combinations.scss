@@ -51,7 +51,7 @@
 .c-removeItem {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   transition: opacity 0.2s ease;
 
   .infoIcon {
@@ -70,72 +70,189 @@
     }
   }
 
+  &__text {
+    width: 290px;
+  }
+
+  $parent: &;
+
   &.--title {
     @include text-style-title;
     padding-bottom: 6px;
     border-bottom: solid var(--color-icon) 1px;
+
+    &__text {
+      margin-top: 5px;
+    }
+
+    // Состояния
+
+    &.--fonts {
+      #{$parent}__container {
+        #{$parent}__fonts {
+          display: block;
+        }
+
+        &::after {
+          content: 'Fonts to remove';
+        }
+      }
+    }
+
+    &.--colors {
+      #{$parent}__container {
+        #{$parent}__colors {
+          display: block;
+        }
+
+        &::after {
+          content: 'Colors to remove';
+        }
+      }
+    }
+
+    &.--effects {
+      #{$parent}__container {
+        #{$parent}__effects {
+          display: block;
+        }
+
+        &::after {
+          content: 'Effects to remove';
+        }
+      }
+    }
+
+    &.--grids {
+      #{$parent}__container {
+        #{$parent}__grids {
+          display: block;
+        }
+
+        &::after {
+          content: 'Grids to remove';
+        }
+      }
+    }
   }
 
   &.--style {
     @include text-style-list-item;
     padding-bottom: 11px;
     border-bottom: solid var(--color-loader-bg) 1px;
-  }
 
-  // Состояния
-  $parent: &;
-
-  &.--fonts {
     #{$parent}__container {
+
+      div {
+        width: 20px;
+        margin-right: 12px;
+      }
+    }
+
+    #{$parent}__text {
+      margin-top: 2px;
+    }
+
+    // Состояния
+
+    &.--fonts {
       #{$parent}__fonts {
         display: block;
-      }
-
-      &::after {
-        content: 'Fonts to remove';
+        font-size: 15px;
       }
     }
-  }
 
-  &.--colors {
-    #{$parent}__container {
+    &.--colors {
       #{$parent}__colors {
         display: block;
-      }
-
-      &::after {
-        content: 'Colors to remove';
+        box-sizing: border-box;
+        height: 20px;
+        border: 1px solid var(--color-loader-bg);
+        border-radius: 20px;
       }
     }
-  }
 
-  &.--effects {
-    #{$parent}__container {
+    &.--effects {
+
+      path {
+        fill: var(--color-text-primary);
+      }
+
       #{$parent}__effects {
         display: block;
-      }
 
-      &::after {
-        content: 'Effects to remove';
+        height: 20px;
+
+        &.--SHADOW {
+
+          .c-removeItem__SHADOW {
+            display: block;
+          }
+        }
+
+        &.--DROP_SHADOW {
+
+          .c-removeItem__DROP_SHADOW {
+            display: block;
+          }
+        }
+
+        &.--INNER_SHADOW {
+
+          .c-removeItem__INNER_SHADOW {
+            display: block;
+          }
+        }
+
+        &.--LAYER_BLUR {
+
+          .c-removeItem__LAYER_BLUR {
+            display: block;
+          }
+        }
+
+        &.--BACKGROUND_BLUR {
+
+          .c-removeItem__BACKGROUND_BLUR {
+            display: block;
+          }
+        }
       }
     }
-  }
 
-  &.--grids {
-    #{$parent}__container {
+    &.--grids {
+
+      rect {
+        fill: var(--color-text-primary);
+      }
+
       #{$parent}__grids {
         display: block;
-      }
 
-      &::after {
-        content: 'Grids to remove';
+        height: 20px;
+
+        &.--ROWS {
+
+          .c-removeItem__ROWS {
+            display: block;
+          }
+        }
+
+        &.--COLUMNS {
+
+          .c-removeItem__COLUMNS {
+            display: block;
+          }
+        }
+
+        &.--GRID {
+
+          .c-removeItem__GRID {
+            display: block;
+          }
+        }
       }
     }
-  }
-
-  &__text {
-    width: 290px;
-    margin-top: 5px;
   }
 
   &.--onRemove {
