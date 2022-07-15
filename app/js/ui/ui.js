@@ -89,6 +89,11 @@ function setStyleProps(key, node, props) {
       preview.style.textDecoration = props.textDecoration;
       preview.style.textTransform = props.textTransform;
       break;
+    case 'colors': {
+      let background = getBackground(props);
+      preview.style.background = background;
+      break;
+    }
     case 'effects': {
       const svg = preview.querySelector(`.c-removeItem__${props.type}`).children[0];
       preview.classList.add(`--${props.type}`);
@@ -99,6 +104,28 @@ function setStyleProps(key, node, props) {
       preview.classList.add(`--${props.type}`);
       break;
   }
+}
+
+function getBackground(props) {
+  let background = '';
+  for (let i = props.colors.length - 1; i >= 0; i--) {
+    const color = props.colors[i];
+
+    if (!color.gradientType) {
+      background += `linear-gradient(0deg, rgba(${color.r}, ${color.g}, ${color.b}, ${color.a}), rgba(${color.r}, ${color.g}, ${color.b}, ${color.a}))`;
+      if (i > 0) background += ', ';
+    } else {
+      background += i === props.colors.length - 1 ? `${color.gradientType}(${color.degrees}deg,` : `,${color.gradientType}(${color.degrees}deg,`;
+      for (let j = 0; j < color.stops.length; j++) {
+        const stop = color.stops[j];
+        background += `rgba(${stop.r}, ${stop.g}, ${stop.b}, ${stop.a}) ${stop.position}%`;
+        if (j < color.stops.length) background += ', ';
+      }
+      background += ')';
+    }
+  }
+
+  return background;
 }
 
 function setItemsEvents() {

@@ -39,6 +39,7 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
+    "@figma-plugin/helpers": "^0.15.2",
     "data-ripple": "^0.1.1"
   }
 }
