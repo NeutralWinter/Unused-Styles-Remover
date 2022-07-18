@@ -53,28 +53,3 @@ function resize(msg) {
   else figma.ui.resize(...xs);
 }
 
-const degrees = (radians) => radians * (180 / Math.PI);
-const arcctg = (x) => Math.PI / 2 - Math.atan(x);
-
-let a = figma.currentPage.selection[0].fills[0].gradientTransform;
-let x1 = Math.acos(a[0][0]);
-let x2 = -Math.asin(a[1][0]);
-
-let y1 = Math.asin(a[0][1]);
-let y2 = Math.acos(a[1][1]);
-
-let atan1 = Math.atan(a[0][2]);
-let atan2 = Math.atan(a[1][2]);
-
-console.log(figma.currentPage.selection[0]);
-console.log(a);
-console.log(degrees(x1 - atan1), degrees(y1 - atan2), atan1);
-console.log(degrees(x2 - atan1), degrees(y2 - atan2), atan2);
-// console.log(a[1][0], a[1][1], a[1][2]);
-// console.log(Math.atan(a[0][2] - 1));
-// console.log(degrees(Math.atan(a[0][2] - 1)));
-// console.log(degrees(Math.atan(a[1][2] / a[0][2])));
-// console.log(degrees(Math.atan(Math.PI / 2 - a[0][2] / a[1][2])));
-// console.log(degrees(Math.atan(Math.PI / 2 - a[1][2] / a[0][2])));
-// console.log(degrees(Math.acos(a[0][0])), degrees(Math.asin(a[0][1])), degrees(Math.atan((a[1][0] - a[1][1])/(a[0][0] - a[0][1]))));
-// console.log(degrees(Math.asin(1/a[1][0])), degrees(Math.acos(1/a[1][1])), degrees(Math.atan(a[1][2])));

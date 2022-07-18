@@ -111,20 +111,27 @@ function getBackground(props) {
   for (let i = props.colors.length - 1; i >= 0; i--) {
     const color = props.colors[i];
 
-    if (!color.gradientType) {
+    if (color.type === 'SOLID') {
       background += `linear-gradient(0deg, rgba(${color.r}, ${color.g}, ${color.b}, ${color.a}), rgba(${color.r}, ${color.g}, ${color.b}, ${color.a}))`;
-      if (i > 0) background += ', ';
-    } else {
-      background += i === props.colors.length - 1 ? `${color.gradientType}(${color.degrees}deg,` : `,${color.gradientType}(${color.degrees}deg,`;
+    } else if (color.type.indexOf('GRADIENT_') != -1) {
+      background += `${color.gradientType}(`
+      if(color.gradientType === 'linear-gradient') background += `${color.degrees}deg,`;
+      else if(color.gradientType === 'radial-gradient') background += `${color.circle[0]}% ${color.circle[1]}% at ${color.center[0]}% ${color.center[1]}%,`;
+
       for (let j = 0; j < color.stops.length; j++) {
         const stop = color.stops[j];
         background += `rgba(${stop.r}, ${stop.g}, ${stop.b}, ${stop.a}) ${stop.position}%`;
-        if (j < color.stops.length) background += ', ';
-      }
-      background += ')';
-    }
-  }
 
+        if (j < color.stops.length - 1) background += ', ';
+      }
+
+      background += ')';
+    } else {
+    }
+
+    if (i > 0) background += ', ';
+  }
+  
   return background;
 }
 

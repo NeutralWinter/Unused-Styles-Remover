@@ -111,10 +111,10 @@ export default class Styles {
     const message = {};
     message.id = style.id;
     message.name = style.name;
-    return this[`${key}Return`](message, style);
+    return this[`_${key}Return`](message, style);
   }
 
-  fontsReturn(message, style) {
+  _fontsReturn(message, style) {
     const fonts = new Fonts();
 
     message.fontFamily = style.fontName.family;
@@ -126,77 +126,73 @@ export default class Styles {
     return message;
   }
 
-  colorsReturn(message, style) {
+  _colorsReturn(message, style) {
     message.colors = [];
 
     for (const paint of style.paints) {
       if (paint.visible === true) {
-        const color = {};
-        if (paint.type == 'SOLID') {
-          color.r = paint.color.r * 255;
-          color.g = paint.color.g * 255;
-          color.b = paint.color.b * 255;
-          color.a = paint.opacity;
-        }
-        if (paint.type.indexOf('GRADIENT_') != -1) {
-          color.stops = [];
+        let color = { type: paint.type };
 
-          switch (paint.type) {
-            case 'GRADIENT_LINEAR':
-              color.gradientType = 'linear-gradient';
-              color.degrees = getDegrees(paint.gradientTransform);
-
-              for (const stop of paint.gradientStops) {
-                const set = {
-                  r: stop.color.r * 255,
-                  g: stop.color.g * 255,
-                  b: stop.color.b * 255,
-                  a: stop.color.a,
-                  position: stop.position * 100,
-                };
-                color.stops.push(set);
-              }
-              break;
-
-            case 'GRADIENT_RADIAL':
-            case 'GRADIENT_DIAMOND':
-              color.gradientType = 'radial-gradient';
-              break;
-
-            case 'GRADIENT_ANGULAR':
-              color.gradientType = 'conic-gradient';
-              break;
-          }
-        }
+        if (color.type == 'SOLID') Object.assign(color, this.__getSolid(paint));
+        if (color.type.indexOf('GRADIENT_') != -1) Object.assign(color, this.__getGradient(paint, color.type.replace(/\w+_/, '')));
+        if (color.type === 'IMAGE');
 
         message.colors.push(color);
-      }
-    }
-
-    function getDegrees(transform) {
-      const degrees = (radians) => radians * (180 / Math.PI);
-
-      console.log(transform[0][0], transform[0][1], transform[0][2]);
-      console.log(transform[1][0], transform[1][1], transform[1][2]);
-      console.log(degrees(Math.acos(1/transform[0][0])), degrees(Math.asin(1/transform[0][1])), degrees(Math.atan(transform[0][2])));
-      console.log(degrees(Math.asin(1/transform[1][0])), degrees(Math.acos(1/transform[1][1])), degrees(Math.atan(transform[1][2])));
-      console.log(degrees(Math.acos(1/transform[0][0])), degrees(Math.asin(1/transform[0][1])), degrees(1/Math.atan(transform[0][2])));
-      console.log(degrees(Math.asin(1/transform[1][0])), degrees(Math.acos(1/transform[1][1])), degrees(1/Math.atan(transform[1][2])));
-      if (transform[0][0] <= 1 && transform[0][1] >= 0) {
-        const a = transform[0][0] * -1 + 1;
-        return (180 * a) / 2;
-      }
-      if (transform[0][0] > -1 && transform[0][1] <= 0) {
-        console.log(transform[0][0]);
-        const a = transform[0][0] + 1;
-        return (180 * a) / 2 + 180;
       }
     }
 
     return message;
   }
 
-  effectsReturn(message, style) {
+  __getDegrees(transform) {
+    const degrees = (radians) => radians * (180 / Math.PI);
+    const side = Math.atan2(-transform[1][0], transform[0][0]);
+
+    let angle;
+    if (side > 0) angle = degrees(Math.atan2(-transform[1][1], -transform[1][0]));
+    else angle = degrees(Math.atan2(transform[1][1], transform[1][0]));
+
+    return angle < 0 ? angle + 360 : angle;
+  }
+
+  __getSolid(paint) {
+    return {
+      r: paint.color.r * 255,
+      g: paint.color.r * 255,
+      b: paint.color.r * 255,
+      a: paint.opacity,
+    };
+  }
+
+  __getGradient(paint, type) {
+    let color = { stops: [] };
+    color.gradientType = `${type.toLowerCase()}-gradient`;
+
+    switch (type) {
+      case 'LINEAR':
+        color.degrees = this.__getDegrees(paint.gradientTransform);
+        break;
+      case 'RADIAL':
+        color.circle = [];
+        color.center = [];
+        break;
+    }
+
+    for (const stop of paint.gradientStops) {
+      const set = {
+        r: stop.color.r * 255,
+        g: stop.color.g * 255,
+        b: stop.color.b * 255,
+        a: stop.color.a,
+        position: stop.position * 100,
+      };
+      color.stops.push(set);
+    }
+
+    return color;
+  }
+
+  _effectsReturn(message, style) {
     const x = style.effects[0].offset ? style.effects[0].offset.x : false;
     const y = style.effects[0].offset ? style.effects[0].offset.y : false;
     message.type = x === 0 && y === 0 ? 'SHADOW' : style.effects[0].type;
@@ -216,7 +212,7 @@ export default class Styles {
     return message;
   }
 
-  gridsReturn(message, style) {
+  _gridsReturn(message, style) {
     message.type = style.layoutGrids[0].pattern;
 
     return message;
