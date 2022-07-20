@@ -4,199 +4,56 @@ import '../../scss/index.scss';
 // js
 import './__DOM-mods';
 import './_ripple-settings';
-import Toggles from './_toggles';
-import Constructor from './_constructor';
+import SettingsScreen from './screens/settings';
+import LoaderScreen from './screens/loader';
+import ReportScreen from './screens/report';
+import ResultScreen from './screens/result';
 
 /// / ================================ Code ======================================
 
-const body = document.body;
+const settingsScreen = new SettingsScreen(),
+  loaderScreen = new LoaderScreen(),
+  reportScreen = new ReportScreen(),
+  resultScreen = new ResultScreen(),
+  cancel = document.querySelectorAll('.js-cancel');
 
-const loader = document.querySelector('.m-loader'),
-  scanningCount = loader.querySelector('.m-loader__scanningCount'),
-  progress = loader.querySelector('.b-progressBar__progress');
+window.onload = () => {
+  settingsScreen.setScreen();
+  parent.postMessage({ pluginMessage: { onLoad: true } }, '*');
 
-const report = document.querySelector('.m-report'),
-  error = report.querySelector('.c-error');
+  onmessage = (msg) => {
+    const message = msg.data.pluginMessage;
 
-const result = document.querySelector('.m-result');
+    if (message.settings) settingsScreen.setSettings(message);
+    if (message.home) resetUI();
 
-const toggles = new Toggles(),
-  cancel = document.querySelectorAll('.js-cancel'),
-  done = document.querySelector('.js-confirm');
+    if (message.preparing) loaderScreen.setScreen();
+    if (message.loader) loaderScreen.changeState(message.state);
+    if (message.progress) loaderScreen.changeProgress(message);
 
-onmessage = (msg) => {
-  const message = msg.data.pluginMessage;
+    if (message.report) {
+      reportScreen.setScreen();
+      reportScreen.outputStyles(message.report);
+    }
 
-  if (message.settings) toggles.settings(message);
-
-  if (message.loader) loader.classList.changeLastOn(`--${message.state}`);
-
-  if (message.progress) {
-    if (message.queue == 1) progress.classList.remove('--animation');
-    else if (!progress.classList.contains('--animation')) progress.classList.add('--animation');
-    progress.style.width = message.progress;
-    scanningCount.textContent = `${message.queue} of ${message.length}`;
-  }
-
-  if (message.report) {
-    parent.postMessage({ pluginMessage: { resize: 'xl' } }, '*');
-    body.classList.changeLastOn('--report');
-    setTimeout(() => loader.classList.changeLastOn('--preparing'), 300);
-    output(message.report);
-    setItemsEvents();
-  }
-
-  if (message.done) result.classList.changeLastOn('--done');
-
-  if (message.nothing) body.classList.changeLastOn('--result');
+    if (message.done) resultScreen.setScreen(message.done);
+    if (message.nothing) resultScreen.setScreen();
+  };
 };
 
-function output(obj) {
-  let list = document.getElementById('template__list');
-  console.log(obj);
-  for (const key in obj) {
-    let clone = list.content.cloneNode(true),
-      child = clone.querySelector('.c-removeItem'),
-      parent = child.parentElement;
+function resetUI() {
+  settingsScreen.setScreen();
+  setTimeout(() => {
+    loaderScreen.loader.classList.changeLastOn('--preparing');
+    resultScreen.result.classList.changeLastOn('--removing');
+    loaderScreen.progress.style.width = 0;
+    loaderScreen.scanningCount.textContent = resultScreen.removedStyles.textContent = '';
+  }, 300);
 
-    child.classList.add(`--${key}`);
-
-    report.appendChild(clone);
-
-    for (const props of obj[key]) {
-      let item = parent.querySelector('#template__item');
-      clone = item.content.cloneNode(true).querySelector('.c-removeItem');
-      let text = clone.querySelector('.c-removeItem__text');
-
-      setStyleProps(key, clone, props);
-
-      clone.classList.add(`--${key}`);
-      text.textContent = props.name;
-      clone.styleId = props.id;
-      clone.styleType = key;
-      parent.appendChild(clone);
-    }
-  }
+  const lists = reportScreen.report.querySelectorAll('.c-removeList');
+  setTimeout(() => lists.forEach((list) => list.remove()), 300);
 }
-
-function setStyleProps(key, node, props) {
-  const preview = node.querySelector(`.c-removeItem__${key}`);
-  switch (key) {
-    case 'fonts':
-      preview.style.fontFamily = props.fontFamily;
-      preview.style.fontWeight = props.fontWeight;
-      preview.style.fontStyle = props.fontStyle;
-      preview.style.textDecoration = props.textDecoration;
-      preview.style.textTransform = props.textTransform;
-      break;
-    case 'colors': {
-      let background = getBackground(props);
-      preview.style.background = background;
-      break;
-    }
-    case 'effects': {
-      const svg = preview.querySelector(`.c-removeItem__${props.type}`).children[0];
-      preview.classList.add(`--${props.type}`);
-      svg.style.transform = `rotate(${props.angle}deg)`;
-      break;
-    }
-    case 'grids':
-      preview.classList.add(`--${props.type}`);
-      break;
-  }
-}
-
-function getBackground(props) {
-  let background = '';
-  for (let i = props.colors.length - 1; i >= 0; i--) {
-    const color = props.colors[i];
-
-    if (color.type === 'SOLID') {
-      background += `linear-gradient(0deg, rgba(${color.r}, ${color.g}, ${color.b}, ${color.a}), rgba(${color.r}, ${color.g}, ${color.b}, ${color.a}))`;
-    } else if (color.type.indexOf('GRADIENT_') != -1) {
-      background += `${color.gradientType}(`
-      if(color.gradientType === 'linear-gradient') background += `${color.degrees}deg,`;
-      else if(color.gradientType === 'radial-gradient') background += `${color.circle[0]}% ${color.circle[1]}% at ${color.center[0]}% ${color.center[1]}%,`;
-
-      for (let j = 0; j < color.stops.length; j++) {
-        const stop = color.stops[j];
-        background += `rgba(${stop.r}, ${stop.g}, ${stop.b}, ${stop.a}) ${stop.position}%`;
-
-        if (j < color.stops.length - 1) background += ', ';
-      }
-
-      background += ')';
-    } else {
-    }
-
-    if (i > 0) background += ', ';
-  }
-  
-  return background;
-}
-
-function setItemsEvents() {
-  let titles = report.querySelectorAll('.js-title'),
-    items = report.querySelectorAll('.js-item');
-
-  titles.onRemoveEvent((title, childs) => {
-    childs.forEach((child) => {
-      let titleClass = title.classList.contains('--onRemove'),
-        childClass = child.classList.contains('--onRemove');
-
-      if (titleClass && !childClass) child.classList.add('--onRemove');
-      if (!titleClass) child.classList.remove('--onRemove');
-    });
-  });
-
-  items.onRemoveEvent((title, childs) => {
-    let allRemoved = [...childs].every((item) => item.classList.contains('--onRemove'));
-
-    if (allRemoved) title.classList.add('--onRemove');
-    if (!allRemoved) title.classList.remove('--onRemove');
-  });
-}
-
-toggles.run.onclick = () => {
-  parent.postMessage({ pluginMessage: { preparing: true } }, '*');
-  body.classList.changeLastOn('--loader');
-};
 
 cancel.forEach((button) => {
-  button.onclick = () => {
-    body.classList.changeLastOn('--options');
-    setTimeout(() => {
-      loader.classList.changeLastOn('--preparing');
-      result.classList.remove('--done');
-      progress.style.width = 0;
-    }, 300);
-    parent.postMessage({ pluginMessage: { resize: 'xs' } }, '*');
-    parent.postMessage({ pluginMessage: { cancel: true } }, '*');
-
-    const lists = report.querySelectorAll('.c-removeList');
-    setTimeout(() => lists.forEach((list) => list.remove()), 300);
-  };
+  button.onclick = () => parent.postMessage({ pluginMessage: { cancel: true, resize: 'xs' } }, '*');
 });
-
-let alert;
-done.onclick = () => {
-  const items = report.querySelectorAll('.js-item');
-
-  let output = new Constructor(items);
-
-  if (Object.keys(output).length == 0) {
-    if (!alert) {
-      alert = true;
-      error.classList.toggle('--alert');
-      setTimeout(() => {
-        error.classList.toggle('--alert');
-        alert = false;
-      }, 3300);
-    }
-  } else {
-    parent.postMessage({ pluginMessage: { resize: 'xs' } }, '*');
-    result.classList.add('--removing');
-    body.classList.changeLastOn('--result');
-    parent.postMessage({ pluginMessage: { remove: output } }, '*');
-  }
-};

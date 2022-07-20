@@ -1,9 +1,11 @@
-export default class Toggles {
+export default class SettingsScreen {
   constructor() {
     this.fonts = document.getElementById('fonts_checkbox');
     this.colors = document.getElementById('colors_checkbox');
     this.effects = document.getElementById('effects_checkbox');
     this.grids = document.getElementById('grids_checkbox');
+
+    this.run.onclick = () => parent.postMessage({ pluginMessage: { preparing: true } }, '*');
   }
 
   get run() {
@@ -11,19 +13,24 @@ export default class Toggles {
     return options.querySelector('.b-button');
   }
 
-  settings(message) {
+  setScreen() {
+    document.body.classList.changeLastOn(`--options`);
+  }
+
+  setSettings(message) {
+    console.log(message);
     for (const key in this) {
       this[key].checked = message.settings[key];
       this[key].onclick = () => {
         message.settings[key] = this[key].checked;
         parent.postMessage({ pluginMessage: { settings: message.settings } }, '*');
-        this.run.disabled = !this.someSelected();
+        this.run.disabled = !this._someSelected();
       };
     }
-    this.run.disabled = !this.someSelected();
+    this.run.disabled = !this._someSelected();
   }
 
-  someSelected() {
+  _someSelected() {
     return Object.values(this).some((element) => element.checked);
   }
 }

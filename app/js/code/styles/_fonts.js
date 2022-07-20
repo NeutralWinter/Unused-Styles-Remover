@@ -1,8 +1,18 @@
 export default class Fonts {
-  constructor() {
-    this.styles = ['italic', 'narrow', 'condensed', 'semicondensed', 'extracondensed', 'oblique', 'extended'];
+  constructor(style) {
+    this.fontFamily = style.fontName.family;
+    this.fontWeight = this._getWeight(style.fontName.style);
+    this.fontStyle = this._getStyle(style.fontName.style);
+    this.textDecoration = this._getDecoration(style.textDecoration);
+    this.textTransform = this._getCase(style.textCase);
+  }
 
-    this.weights = [
+  get styles() {
+    return ['italic', 'narrow', 'condensed', 'semicondensed', 'extracondensed', 'oblique', 'extended'];
+  }
+
+  get weights() {
+    return [
       {
         weight: ['thin', 'hairline'],
         number: 100,
@@ -50,7 +60,7 @@ export default class Fonts {
     ];
   }
 
-  getStyle(prop) {
+  _getStyle(prop) {
     let str = prop.toLowerCase().replace(' ', '');
 
     for (const item of this.weights) {
@@ -73,7 +83,7 @@ export default class Fonts {
     return str;
   }
 
-  getWeight(prop) {
+  _getWeight(prop) {
     let str = prop.toLowerCase().replace(' ', '');
 
     for (const item of this.styles) {
@@ -91,7 +101,7 @@ export default class Fonts {
     return 'undefined';
   }
 
-  getDecoration(prop) {
+  _getDecoration(prop) {
     switch (prop) {
       case 'NONE':
         return 'none';
@@ -102,7 +112,7 @@ export default class Fonts {
     }
   }
 
-  getCase(prop) {
+  _getCase(prop) {
     switch (prop) {
       case 'ORIGINAL':
         return 'none';

@@ -225,8 +225,13 @@ $fadeOut0: fadeOut 0s linear forwards;
     }
 
     #{$parent}__check {
-      #{$parent}__wrapper {
+      #{$parent}__count {
+        display: flex;
+        justify-content: center;
         width: 56px;
+        color: var(--color-primary);
+        font-size: 40px;
+        font-weight: 500;
       }
     }
 

@@ -93,7 +93,7 @@
           display: block;
         }
 
-        &::after {
+        &::before {
           content: 'Fonts to remove';
         }
       }
@@ -105,7 +105,7 @@
           display: block;
         }
 
-        &::after {
+        &::before {
           content: 'Colors to remove';
         }
       }
@@ -117,7 +117,7 @@
           display: block;
         }
 
-        &::after {
+        &::before {
           content: 'Effects to remove';
         }
       }
@@ -129,7 +129,7 @@
           display: block;
         }
 
-        &::after {
+        &::before {
           content: 'Grids to remove';
         }
       }
@@ -166,20 +166,38 @@
       #{$parent}__colors {
         position: relative;
         display: block;
-        box-sizing: border-box;
-        height: 20px;
-        overflow: hidden;
-        border: 1px solid var(--color-loader-bg);
-        border-radius: 20px;
 
-        &::after {
-          position: absolute;
-          z-index: -1;
+        svg {
+          display: none;
 
-          content: '';
-          width: 100%;
-          height: 100%;
-          background-image: url('https://i.imgur.com/E0COiES.jpeg');
+          path {
+            fill: var(--color-text-primary);
+          }
+        }
+
+        &.--color {
+          box-sizing: border-box;
+          height: 20px;
+          overflow: hidden;
+          border: 1px solid var(--color-loader-bg);
+          border-radius: 20px;
+
+          &::after {
+            position: absolute;
+            z-index: -1;
+  
+            content: '';
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.imgur.com/E0COiES.jpeg');
+          }
+        }
+
+        &.--image {
+
+          svg {
+            display: block;
+          }
         }
       }
     }

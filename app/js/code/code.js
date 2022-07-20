@@ -1,55 +1,40 @@
 //// ================================ Imports ======================================
 import Settings from './settings';
-import Styles from './styles';
+import Styles from './styles/styles';
+import { preparingToScan, removeStyles, resizeUI, cancelScaning } from './commands';
 
 ///// ================================ Code ======================================
 console.clear();
 
-const xl = [456, 556],
-  xs = [278, 350];
+let loaded;
+(async function start() {
+  let command = figma.command ? 'run' : 'ui';
+  const settings = new Settings('new---test');
+
+  figma.root.setRelaunchData({ run: 'Starts with you custom properties, that you set in UI' });
+
+  figma.showUI(__html__, { themeColors: true });
+  resizeUI('xs');
+  figma.ui.postMessage({ settings: await settings.get() });
+  figma.ui.onmessage = async (msg) => {
+    if (msg.onLoad) loaded = true;
+    if (loaded && command === 'ui') runCommand(msg, settings);
+    else if (loaded && command === 'run') {
+      runCommand({ preparing: true }, settings);
+      command = 'ui';
+    }
+  };
+})();
 
 let styles;
-
-(async function start(command) {
-  const settings = new Settings('gfjh3352352sds532523lisd');
-  switch (command) {
-    case 'ui':
-      figma.showUI(__html__, { themeColors: true });
-      figma.ui.resize(...xs);
-      figma.ui.postMessage({ settings: await settings.get() });
-      figma.ui.onmessage = async (msg) => run(msg, settings);
-      break;
-  }
-})(figma.command);
-
-async function run(msg, settings) {
-  if (msg.settings) await settings.set(msg.settings);
-  if (msg.preparing) {
+async function runCommand(command, settings) {
+  console.log(command);
+  if (command.settings) await settings.set(command.settings);
+  if (command.preparing) {
     styles = new Styles(await settings.get());
-    preparing();
+    preparingToScan(styles);
   }
-  if (msg.remove) remove(msg.remove);
-
-  if (msg.resize) resize(msg.resize);
-  if (msg.cancel) styles.cancel();
+  if (command.remove) removeStyles(command.remove, styles);
+  if (command.resize) resizeUI(command.resize);
+  if (command.cancel) cancelScaning(styles);
 }
-
-async function preparing() {
-  setTimeout(() => {
-    const collection = styles.filterNodes(figma.root);
-    setTimeout(() => styles.scanNodes(collection), 350);
-  }, 350);
-}
-
-function remove(msg) {
-  setTimeout(() => {
-    styles.remove(msg);
-    figma.ui.postMessage({ done: true });
-  }, 350);
-}
-
-function resize(msg) {
-  if (msg == 'xl') figma.ui.resize(...xl);
-  else figma.ui.resize(...xs);
-}
-
