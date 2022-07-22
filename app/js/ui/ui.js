@@ -2,7 +2,7 @@
 // scss
 import '../../scss/index.scss';
 // js
-import './__DOM-mods';
+import './_DOM-mods';
 import './_ripple-settings';
 import SettingsScreen from './screens/settings';
 import LoaderScreen from './screens/loader';

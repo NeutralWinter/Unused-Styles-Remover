@@ -1,7 +1,7 @@
 import Fonts from './_fonts';
 import Colors from './_colors';
 import Effects from './_effects';
-import { percent } from '../utils';
+import { percent } from './__utils';
 
 export default class Styles {
   constructor(settings) {

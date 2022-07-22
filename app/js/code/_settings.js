@@ -1,19 +1,15 @@
 export default class Settings {
-  #test;
+  #name;
   constructor(name) {
     this.fonts = true;
     this.colors = true;
     this.effects = true;
     this.grids = true;
-    this.#test = name;
-  }
-
-  get test() {
-    return this.#test;
+    this.#name = name;
   }
 
   async get() {
-    let settings = await figma.clientStorage.getAsync(this.#test);
+    let settings = await figma.clientStorage.getAsync(this.#name);
 
     if (!settings) {
       await this.set(this);
@@ -24,6 +20,6 @@ export default class Settings {
   }
 
   async set(obj) {
-    figma.clientStorage.setAsync(this.#test, obj);
+    figma.clientStorage.setAsync(this.#name, obj);
   }
 }

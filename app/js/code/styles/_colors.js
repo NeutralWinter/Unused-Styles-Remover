@@ -1,4 +1,4 @@
-import { degrees } from '../utils';
+import { degrees } from './__utils';
 
 export default class Colors {
   constructor(style) {

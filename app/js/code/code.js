@@ -1,7 +1,7 @@
 //// ================================ Imports ======================================
-import Settings from './settings';
+import Settings from './_settings';
 import Styles from './styles/styles';
-import { preparingToScan, removeStyles, resizeUI, cancelScaning } from './commands';
+import { preparingToScan, removeStyles, resizeUI, cancelScaning } from './_commands';
 
 ///// ================================ Code ======================================
 console.clear();

@@ -1,4 +1,4 @@
-import Constructor from '../_constructor';
+import OutputConstructor from './_report-output-constructor';
 import ReportItems from './_report-Items';
 
 export default class ReportScreen extends ReportItems {
@@ -29,7 +29,7 @@ export default class ReportScreen extends ReportItems {
 
   _confirm() {
     const items = this.report.querySelectorAll('.js-item');
-    let output = new Constructor(items);
+    let output = new OutputConstructor(items);
 
     if (Object.keys(output).length == 0) {
       if (!this.#alert) {

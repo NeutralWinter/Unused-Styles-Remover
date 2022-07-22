@@ -1,4 +1,4 @@
-export default class Constructor {
+export default class OutputConstructor {
   constructor(nodes) {
     nodes.forEach((element) => {
       const contains = !element.classList.contains('--onRemove');
