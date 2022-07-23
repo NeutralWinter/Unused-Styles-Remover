@@ -20,10 +20,10 @@ export default class SettingsScreen {
   setSettings(message) {
     console.log(message);
     for (const key in this) {
-      this[key].checked = message.settings[key];
+      this[key].checked = message[key];
       this[key].onclick = () => {
-        message.settings[key] = this[key].checked;
-        parent.postMessage({ pluginMessage: { settings: message.settings } }, '*');
+        message[key] = this[key].checked;
+        parent.postMessage({ pluginMessage: { settings: message } }, '*');
         this.run.disabled = !this._someSelected();
       };
     }

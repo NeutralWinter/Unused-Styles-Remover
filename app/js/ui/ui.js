@@ -18,24 +18,23 @@ const settingsScreen = new SettingsScreen(),
   cancel = document.querySelectorAll('.js-cancel');
 
 window.onload = () => {
-  settingsScreen.setScreen();
   parent.postMessage({ pluginMessage: { onLoad: true } }, '*');
 
   onmessage = (msg) => {
     const message = msg.data.pluginMessage;
 
-    if (message.settings) settingsScreen.setSettings(message);
-    if (message.home) resetUI();
+    if (message.settingsScreen) settingsScreen.setScreen();
+    if (message.settings) settingsScreen.setSettings(message.settings);
 
+    if (message.home) resetUI();
     if (message.preparing) loaderScreen.setScreen();
     if (message.loader) loaderScreen.changeState(message.state);
     if (message.progress) loaderScreen.changeProgress(message);
-
     if (message.report) {
       reportScreen.setScreen();
       reportScreen.outputStyles(message.report);
+      console.log(message.report);
     }
-
     if (message.done) resultScreen.setScreen(message.done);
     if (message.nothing) resultScreen.setScreen();
   };

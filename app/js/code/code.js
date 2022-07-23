@@ -18,8 +18,11 @@ let loaded;
   figma.ui.postMessage({ settings: await settings.get() });
   figma.ui.onmessage = async (msg) => {
     if (msg.onLoad) loaded = true;
-    if (loaded && command === 'ui') runCommand(msg, settings);
-    else if (loaded && command === 'run') {
+
+    if (loaded && command === 'ui') {
+      if (msg.onLoad) figma.ui.postMessage({ settingsScreen: true });
+      runCommand(msg, settings);
+    } else if (loaded && command === 'run') {
       runCommand({ preparing: true }, settings);
       command = 'ui';
     }

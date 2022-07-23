@@ -20,8 +20,8 @@ export default class Colors {
   _getSolid(paint) {
     return {
       r: paint.color.r * 255,
-      g: paint.color.r * 255,
-      b: paint.color.r * 255,
+      g: paint.color.g * 255,
+      b: paint.color.b * 255,
       a: paint.opacity,
     };
   }
