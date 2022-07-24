@@ -7,7 +7,6 @@ export function preparingToScan(styles) {
   figma.ui.postMessage({ preparing: true });
   setTimeout(() => {
     const collection = styles.filterNodes(figma.root);
-    console.log(collection);
     setTimeout(() => styles.scanNodes(collection), 350);
   }, 350);
 }

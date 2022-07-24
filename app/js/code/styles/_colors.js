@@ -50,13 +50,8 @@ export default class Colors {
   }
 
   _getGradientDeg(transform) {
-    const side = Math.atan2(-transform[1][0], transform[0][0]);
-
-    let angle;
-    if (side > 0) angle = degrees(Math.atan2(-transform[1][1], -transform[1][0]));
-    else angle = degrees(Math.atan2(transform[1][1], transform[1][0]));
-
-    return angle < 0 ? angle + 360 : angle;
+    const angle = degrees(Math.atan2(-transform[1][1], -transform[1][0]));
+    return angle < 180 ? 180 + angle : angle;
   }
 
   _getStopDeg(currentStop, lastStop) {

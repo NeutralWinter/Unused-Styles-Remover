@@ -33,7 +33,6 @@ window.onload = () => {
     if (message.report) {
       reportScreen.setScreen();
       reportScreen.outputStyles(message.report);
-      console.log(message.report);
     }
     if (message.done) resultScreen.setScreen(message.done);
     if (message.nothing) resultScreen.setScreen();

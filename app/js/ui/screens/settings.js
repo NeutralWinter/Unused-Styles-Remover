@@ -18,7 +18,6 @@ export default class SettingsScreen {
   }
 
   setSettings(message) {
-    console.log(message);
     for (const key in this) {
       this[key].checked = message[key];
       this[key].onclick = () => {

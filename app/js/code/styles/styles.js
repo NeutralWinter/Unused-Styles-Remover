@@ -37,10 +37,7 @@ export default class Styles {
     const properties = this.properties;
     const result = {};
 
-    console.log(properties);
     for (const key in this) result[key] = [''];
-
-    console.log(result);
 
     (function filter(node) {
       for (const key in properties) {
@@ -61,8 +58,6 @@ export default class Styles {
   }
 
   scanNodes(nodes) {
-    console.log('te222s', nodes);
-
     const self = this;
     const keys = Object.keys(self);
     const result = {};
@@ -94,8 +89,7 @@ export default class Styles {
         if (i == keys.length - 1 && j == styles.length - 1) {
           let length = 0;
           for (const st in result) length += result[st].length;
-
-          console.log(result);
+          
           if (length != 0) figma.ui.postMessage({ report: result });
           else figma.ui.postMessage({ nothing: true });
 
@@ -110,8 +104,6 @@ export default class Styles {
     })(0);
 
     function scaningNodes(nodes, key, style) {
-      console.log('tes', style);
-      console.log('tes', nodes);
       for (let i = 0; i < nodes[key].length; i++) {
         const node = nodes[key][i];
 

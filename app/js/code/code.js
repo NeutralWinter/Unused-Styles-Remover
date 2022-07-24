@@ -9,7 +9,7 @@ console.clear();
 let loaded;
 (async function start() {
   let command = figma.command ? 'run' : 'ui';
-  const settings = new Settings('new---test');
+  const settings = new Settings('usr-settings');
 
   figma.root.setRelaunchData({ run: 'Starts with you custom properties, that you set in UI' });
 
@@ -31,7 +31,6 @@ let loaded;
 
 let styles;
 async function runCommand(command, settings) {
-  console.log(command);
   if (command.settings) await settings.set(command.settings);
   if (command.preparing) {
     styles = new Styles(await settings.get());
