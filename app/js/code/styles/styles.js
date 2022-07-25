@@ -1,6 +1,5 @@
 import Fonts from './_fonts';
 import Colors from './_colors';
-import Effects from './_effects';
 import { percent } from './__utils';
 
 export default class Styles {
@@ -89,7 +88,7 @@ export default class Styles {
         if (i == keys.length - 1 && j == styles.length - 1) {
           let length = 0;
           for (const st in result) length += result[st].length;
-          
+
           if (length != 0) figma.ui.postMessage({ report: result });
           else figma.ui.postMessage({ nothing: true });
 
@@ -145,7 +144,23 @@ export default class Styles {
   }
 
   _effectsReturn(message, style) {
-    const effects = new Effects(style);
+    const x = style.effects[0].offset ? style.effects[0].offset.x : false,
+      y = style.effects[0].offset ? style.effects[0].offset.y : false;
+
+    let angle = 0;
+    if (x === 0 && y > 0) angle = 0;
+    if (x < 0 && y > 0) angle = 45;
+    if (x < 0 && y === 0) angle = 90;
+    if (x < 0 && y < 0) angle = 135;
+    if (x === 0 && y < 0) angle = 180;
+    if (x > 0 && y < 0) angle = -135;
+    if (x > 0 && y === 0) angle = -90;
+    if (x > 0 && y > 0) angle = -45;
+
+    const effects = {
+      type: x === 0 && y === 0 ? 'SHADOW' : style.effects[0].type,
+      angle: angle,
+    };
     return { ...message, ...effects };
   }
 
